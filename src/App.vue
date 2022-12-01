@@ -13,9 +13,7 @@ export default {
   components: {
     "custom-drawer": CustomDrawer,
   },
-  data() {
-    return { drawer: true };
-  },
+  data() {},
 };
 </script>
 
