@@ -1,5 +1,10 @@
 <template>
-  <div></div>
+  <div>
+    <v-progress-circular
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </div>
 </template>
 
 <script>

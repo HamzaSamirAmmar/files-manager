@@ -48,7 +48,7 @@ const routes = [
     component: ReservedFilesView,
   },
   {
-    path: "/group-details",
+    path: "/group-details/:id",
     name: "group-details",
     component: GroupDetailsView,
   },

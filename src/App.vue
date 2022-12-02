@@ -13,7 +13,11 @@ export default {
   components: {
     "custom-drawer": CustomDrawer,
   },
-  data() {},
+  data() {
+    return{
+      
+    }
+  },
 };
 </script>
 
