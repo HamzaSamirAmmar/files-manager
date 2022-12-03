@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <custom-drawer />
-    <v-main>
+    <CustomDrawer v-if="isAuth"/>
+    <v-main class="grey lighten-4">
       <router-view />
     </v-main>
   </v-app>
@@ -11,12 +11,12 @@
 import CustomDrawer from "./components/CustomDrawer.vue";
 export default {
   components: {
-    "custom-drawer": CustomDrawer,
+    CustomDrawer,
   },
   data() {
-    return{
-      
-    }
+    return {
+      isAuth: false,
+    };
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="grey lighten-5">
+  <div>
     <v-container>
       <v-col>
         <v-breadcrumbs :items="links">

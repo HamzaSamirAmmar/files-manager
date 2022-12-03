@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <h1>LoginView</h1>
-  </div>
+  <LoginContainer />
 </template>
 
 <script>
-export default {};
+import LoginContainer from "./components/LoginContainer.vue";
+
+export default {
+  components: { LoginContainer },
+};
 </script>
 
 <style scoped></style>

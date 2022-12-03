@@ -60,4 +60,14 @@ const router = new VueRouter({
   routes,
 });
 
+// router.beforeEach((to, from, next) => {
+//   next('/login');
+//   // TODO take this value from pinia (useUserStore)
+//   // if (isAuthenticated) {
+//   //   next('/')
+//   // } else {
+//   //   next('/login');
+//   // }
+// });
+
 export default router;
