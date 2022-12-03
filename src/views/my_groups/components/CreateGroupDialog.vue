@@ -1,5 +1,5 @@
 <template>
-  <FormDialog :showCondition="show">
+  <FormDialog :showCondition="show" @closed="closeDialog()">
     <template v-slot:title>
       Create a new Group
     </template>
@@ -99,9 +99,15 @@ export default {
     closeDialog() {
       this.show = false;
       this.$emit('closed');
+      this.editedIndex= -1
+      this.editedItem= {}
     },
     //TODO send create request
-    createGroup(){},
+    createGroup(){
+      //send request
+      //call this.closeDialog
+      this.closeDialog();
+    },
   },
 };
 </script>

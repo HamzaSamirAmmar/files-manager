@@ -1,18 +1,15 @@
 <template>
     <div>
-        <DataTable :items="groups" :headers="headers" :loading="loading">
+        <DataTable :items="members" :headers="headers" :loading="loading">
             <template v-slot:actions="slotProps">
-                <v-icon small class="mr-2" @click="showItem(slotProps.item)">
-                    mdi-eye
-                </v-icon>
                 <v-icon small @click="showDeleteDialog(slotProps.item)">
-                    mdi-delete
+                    mdi-account-remove
                 </v-icon>
             </template>
         </DataTable>
         <DeleteDialog :showCondition="dialogDelete" @closed="closeDeleteDialog()">
             <template v-slot:title>
-                Are you sure you want to delete this item?
+                Are you sure you want to remove this member from group?
             </template>
             <template v-slot:actions>
                 <v-btn color="blue darken-1" text @click="closeDeleteDialog()">Cancel</v-btn>
@@ -42,44 +39,27 @@ export default {
             { text: 'Name', value: 'name' },
             { text: 'Actions', sortable: false, value: 'actions' },
         ],
-        //TODO change it when data is fetched
-        loading: true,
-        // TODO fecth groups from repo(  put in created() )
-        groups: [
-                {
-                    id: 1,
-                    name: "group 1",
-                },
-                {
-                    id: 2,
-                    name: "group 2",
-                },
-                {
-                    id: 3,
-                    name: "group 3",
-                },
-                {
-                    id: 4,
-                    name: "group 4",
-                },
-                {
-                    id: 5,
-                    name: "group 5",
-                },
-                {
-                    id: 6,
-                    name: "group 6",
-                },
-            ],
+        loading: false,
+        members: [
+            {
+                id: 1,
+                name: "member 1",
+            },
+            {
+                id: 2,
+                name: "member 2",
+            },
+            {
+                id: 3,
+                name: "member 3",
+            },
+        ],
         editedIndex:'',
-        editedItem:{},       
+        editedItem:{}, 
     }),
     methods: {
-        showItem(item) {
-            this.$router.push({ name: 'group-details', params: { id: item.id } })
-        },
         showDeleteDialog(item) {
-            this.editedIndex = this.groups.indexOf(item)
+            this.editedIndex = this.members.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true;
         },
@@ -87,11 +67,12 @@ export default {
             this.dialogDelete = false;
             this.editedIndex= -1
             this.editedItem= {}
-    },
-        //TODO send delete request (when it's a success remove it from list) 
+        },
+        //TODO send delete request (when it's a success remove it from list)
         deleteItemConfirm() {
         //send request
-        //call this.closeDeleteDialog
+
+        //close dialog
         this.closeDeleteDialog();
         },
     }

@@ -28,7 +28,7 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: "/file-history",
+    path: "/file-history/:id",
     name: "file-history",
     component: FileHistoryView,
   },
