@@ -1,6 +1,6 @@
 <template>
-  <v-btn color="primary">
-    create new {{ entityName }}
+  <v-btn color="primary" small>
+    add new {{ entityName }}
     <v-icon>mdi-plus</v-icon>
   </v-btn>
 </template>

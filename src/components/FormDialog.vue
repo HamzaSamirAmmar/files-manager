@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="500px">
+  <v-dialog v-model="show" max-width="500px" @click:outside="close()"	>
     <v-card elevation="2" class="pa-5" >
       <v-card-title>
         <v-spacer></v-spacer>
@@ -34,6 +34,11 @@ export default {
       }
     }
   },
+  methods:{
+    close(){
+      this.$emit('closed');
+    }
+  }
 };
 </script>
 
