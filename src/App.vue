@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <CustomDrawer v-if="isAuth"/>
+    <!-- drawer -->
+    <CustomDrawer v-if="isAuth" />
+    <!-- toast -->
+    <VToast ref="VToast" />
+    <!-- page view -->
     <v-main class="grey lighten-4">
       <router-view />
     </v-main>
@@ -9,14 +13,19 @@
 
 <script>
 import CustomDrawer from "./components/CustomDrawer.vue";
+import VToast from "./components/VToast.vue";
 export default {
-  components: {
-    CustomDrawer,
-  },
   data() {
     return {
       isAuth: false,
     };
+  },
+  components: {
+    CustomDrawer,
+    VToast,
+  },
+  mounted() {
+    this.$root.VToast = this.$refs.VToast;
   },
 };
 </script>
