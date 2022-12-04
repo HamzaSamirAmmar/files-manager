@@ -1,6 +1,10 @@
 <template>
   <div>
+    <!--If current state is !loading show the passed component-->
+    <slot v-if="!loading"></slot>
+    <!--Else hide the passed component and show the loader-->
     <v-progress-circular
+      v-else
       indeterminate
       color="primary"
     ></v-progress-circular>
@@ -8,7 +12,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    loading: Boolean,
+  },
+};
 </script>
-
-<style scoped></style>

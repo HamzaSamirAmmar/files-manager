@@ -23,7 +23,7 @@
                     type="text"
                     color="primary"
                     :rules="emailRules"
-                    v-model="emailValue"
+                    v-model="email"
                   />
 
                   <v-text-field
@@ -39,25 +39,19 @@
                   <slot name="extra-fields"></slot>
                 </v-form>
               </v-card-text>
-              <!-- action button -->
-              <slot name="action" :email="emailValue"></slot>
-              <!-- <div class="text-center my-10">
-                <v-btn rounded color="primary" dark>Login</v-btn>
-              </div> -->
+              <!-- Form action button -->
+              <slot name="action" :email="email"></slot>
             </v-col>
             <!-- Right side -->
             <v-col cols="12" md="4" class="primary">
-              <slot name="right-side"></slot>
-              <!-- <v-card-text class="text-center mt-12 secondary--text">
-                <h2 class="text-center display-1">Don't have an account?</h2>
-                <h4 class="text-center mt-10">
-                  Enter your personal details and start your journey with the
-                  best files manager ever!
-                </h4>
+              <!-- Text -->
+              <v-card-text class="text-center mt-12 secondary--text">
+                <slot name="right-side-text"></slot>
               </v-card-text>
+              <!-- Action -->
               <div class="text-center">
-                <v-btn rounded outlined dark @click="step++">Register</v-btn>
-              </div> -->
+                <slot name="right-side-action"></slot>
+              </div>
             </v-col>
           </v-row>
         </v-card>
@@ -68,6 +62,7 @@
 
 <script>
 export default {
+  /// TODO pass the validation bool value to the parent
   data: () => ({
     emailRules: [
       (v) =>
@@ -75,23 +70,17 @@ export default {
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
         "E-mail must be valid",
     ],
-    emailValue: "",
-    passwordRules: [],
+    email: "",
+    passwordRules: [
+      (v) => !!v || "Password is required",
+      (v) => (v && v.length >= 6) || "Password must be at least 6 characters",
+    ],
   }),
   props: {
     title: String,
     password: String,
-    email: String,
   },
   computed: {
-    localEmailValue: {
-      get() {
-        return this.email;
-      },
-      set(newValue) {
-        this.$emit("update:email", newValue);
-      },
-    },
     localPasswordValue: {
       get() {
         return this.password;

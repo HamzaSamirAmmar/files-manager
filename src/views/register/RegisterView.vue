@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <h1>RegisterView</h1>
-  </div>
+  <RegisterForm />
 </template>
 
 <script>
-export default {};
+import RegisterForm from "./components/RegisterForm.vue";
+
+export default {
+  components: { RegisterForm: RegisterForm },
+};
 </script>
 
 <style scoped></style>
