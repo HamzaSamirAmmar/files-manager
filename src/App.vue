@@ -17,7 +17,7 @@ import VToast from "./components/VToast.vue";
 export default {
   data() {
     return {
-      isAuth: true,
+      isAuth: false,
     };
   },
   components: {

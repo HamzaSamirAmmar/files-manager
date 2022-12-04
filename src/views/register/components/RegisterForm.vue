@@ -56,7 +56,7 @@ export default {
     password: "",
     usernameRules: [
       (v) => !!v || "Username is required",
-      (v) => (v && v.length >= 4) || "Username must be at least 6 characters",
+      (v) => (v && v.length >= 4) || "Username must be at least 4 characters",
     ],
   }),
   methods: {

@@ -24,11 +24,18 @@ export default {
     };
   },
   methods: {
-    show(data) {
-      this.message = data.message || 'missing "message".';
-      this.color = data.color || "error";
-      this.timer = data.timer || 2500;
-      this.icon = data.icon || "alert-circle-outline";
+    showSuccessMessage(message) {
+      this.message = message || 'missing "message".';
+      this.color = "success";
+      this.timer = 2500;
+      this.icon = "mdi-check";
+      this.showSnackbar = true;
+    },
+    showErrorMessage(message) {
+      this.message = message || 'missing "message".';
+      this.color = "error";
+      this.timer = 2500;
+      this.icon = "alert-circle-outline";
       this.showSnackbar = true;
     },
   },

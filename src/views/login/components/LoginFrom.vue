@@ -44,7 +44,7 @@ export default {
   methods: {
     login: function (email) {
       // TODO: post login using auth repository
-      this.$root.VToast.show({message:"Network error"});
+      this.$root.VToast.showSuccessMessage("Network error");
       this.loading = true;
       console.log(email);
       console.log(this.password);
