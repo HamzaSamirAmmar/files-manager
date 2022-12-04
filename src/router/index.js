@@ -61,7 +61,7 @@ const router = new VueRouter({
 });
 
 // TODO take this value from pinia (useUserStore)
-let isAuth = false;
+let isAuth = true;
 
 router.beforeEach((to, from, next) => {
   if (to.path !== "/login" && to.path !== "/register") {
