@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DataTable :items="groups" :headers="headers" :loading="loading">
+        <DataTable :items="ownedGroups" :headers="headers" :loading="ownedGroupsLoading">
             <template v-slot:actions="slotProps">
                 <v-icon small class="mr-2" @click="showItem(slotProps.item)">
                     mdi-eye
@@ -25,11 +25,32 @@
 <script>
 import DataTable from './../../../components/DataTable.vue';
 import DeleteDialog from './../../../components/FormDialog.vue';
+import { useGroupStore } from '@/store/GroupsStore';
+import { mapActions, mapState } from 'pinia';
 
 export default {
     components: {
         DataTable,
         DeleteDialog
+    },
+    computed:{
+        ...mapState(useGroupStore, ['ownedGroups','ownedGroupsLoading','ownedGroupsHasError','ownedGroupsError'])
+    },
+    mounted(){
+        this.fetchOwnedGroups();
+    },
+    watch: {
+        ownedGroupsHasError: {
+            immediate: true,
+            deep: true,
+            handler(newValue) {
+                this.$nextTick(() => {
+                    if(newValue){
+                        this.$root.VToast.show({message:this.ownedGroupsError});         
+                    }
+                })
+            }
+        }
     },
     data: () => ({
         dialogDelete: false,
@@ -42,39 +63,11 @@ export default {
             { text: 'Name', value: 'name' },
             { text: 'Actions', sortable: false, value: 'actions' },
         ],
-        //TODO change it when data is fetched
-        loading: true,
-        // TODO fecth groups from repo(  put in created() )
-        groups: [
-                {
-                    id: 1,
-                    name: "group 1",
-                },
-                {
-                    id: 2,
-                    name: "group 2",
-                },
-                {
-                    id: 3,
-                    name: "group 3",
-                },
-                {
-                    id: 4,
-                    name: "group 4",
-                },
-                {
-                    id: 5,
-                    name: "group 5",
-                },
-                {
-                    id: 6,
-                    name: "group 6",
-                },
-            ],
         editedIndex:'',
         editedItem:{},       
     }),
     methods: {
+        ...mapActions(useGroupStore,['fetchOwnedGroups']),
         showItem(item) {
             this.$router.push({ name: 'group-details', params: { id: item.id } })
         },
