@@ -1,11 +1,20 @@
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactroy";
+import Repository from "../repositories/RepositoryFactory";
 import { Group } from "@/models/GroupModel";
 
 const groupRepository = Repository.get("groups");
 
 
 export const useGroupStore = defineStore("groupStore", {
+<<<<<<< HEAD
+    state: ()=>({
+        ownedGroups:[],
+        ownedGroupsLoading:true,
+        ownedGroupsHasError:false,
+        ownedGroupsError:'',
+        joinedGroups:[],
+        groupOfId:{},
+=======
     state: () => ({
         ownedGroups: [],
         ownedGroupsLoading: true,
@@ -14,6 +23,7 @@ export const useGroupStore = defineStore("groupStore", {
 
         joinedGroups: [],
         groupOfId: {},
+>>>>>>> 786de210b59c28de545280302f71b6f50e121f82
     }),
     getters: {
 

@@ -32,7 +32,7 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     :rules="passwordRules"
-                    v-model="localPasswordValue"
+                    v-model="password"
                     type="password"
                     color="primary"
                   />
@@ -40,7 +40,7 @@
                 </v-form>
               </v-card-text>
               <!-- Form action button -->
-              <slot name="action" :email="email"></slot>
+              <slot name="action" :email="email" :password="password"></slot>
             </v-col>
             <!-- Right side -->
             <v-col cols="12" md="4" class="primary">
@@ -62,15 +62,17 @@
 
 <script>
 export default {
-  /// TODO pass the validation bool value to the parent
+  /// TODO ass the validation bool value to the parent
   data: () => ({
+    email: "",
+    password: "",
     emailRules: [
       (v) =>
         !v ||
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
         "E-mail must be valid",
+      (v) => !!v || "Email is required",
     ],
-    email: "",
     passwordRules: [
       (v) => !!v || "Password is required",
       (v) => (v && v.length >= 6) || "Password must be at least 6 characters",
@@ -78,18 +80,8 @@ export default {
   }),
   props: {
     title: String,
-    password: String,
   },
-  computed: {
-    localPasswordValue: {
-      get() {
-        return this.password;
-      },
-      set(newValue) {
-        this.$emit("update:password", newValue);
-      },
-    },
-  },
+  computed: {},
 };
 </script>
 

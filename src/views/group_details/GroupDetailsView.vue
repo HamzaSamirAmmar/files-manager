@@ -58,10 +58,10 @@ import DeleteDialog from './../../components/FormDialog.vue';
 
 export default {
   components: {
-    CreateButton,
+    CreateButton,                                                                           
     MembersTable,
     FilesTable,
-    AddMembersDialog,
+    AddMembersDialog, 
     AddFilesDialog,
     DeleteDialog
   },

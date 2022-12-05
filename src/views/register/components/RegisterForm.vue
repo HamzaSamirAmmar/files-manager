@@ -1,8 +1,5 @@
 <template>
-  <!-- we cas pass the password as a sync v-model -->
-  <!-- or we can get the email by getting the slotProps -->
-  <!-- remember that we can use $refs -->
-  <AuthForm :title="title" :password.sync="password">
+  <AuthForm :title="title">
     <!--From extra fields-->
     <template v-slot:extra-fields>
       <v-text-field
@@ -15,13 +12,16 @@
         type="text"
         color="primary"
     /></template>
-    <!-- Form Action -->
     <!--From action-->
     <template v-slot:action="slotProps">
       <div class="text-center my-10">
         <CustomLoader :loading="loading">
           <template v-slot:default>
-            <v-btn @click="register(slotProps.email)" rounded color="primary" dark
+            <v-btn
+              @click="register(slotProps.email, slotProps.password)"
+              rounded
+              color="primary"
+              dark
               >Register</v-btn
             >
           </template>
@@ -48,24 +48,23 @@ import AuthForm from "@/components/AuthForm.vue";
 import CustomLoader from "../../../components/CustomLoader.vue";
 
 export default {
-  components: { AuthForm,CustomLoader },
+  components: { AuthForm, CustomLoader },
   data: () => ({
     loading: false,
     title: "Create your account",
     username: "",
-    password: "",
     usernameRules: [
       (v) => !!v || "Username is required",
-      (v) => (v && v.length >= 4) || "Username must be at least 6 characters",
+      (v) => (v && v.length >= 4) || "Username must be at least 4 characters",
     ],
   }),
   methods: {
-    register: function (email) {
+    register: function (email, password) {
       // TODO: post register the using auth repository
       this.loading = true;
       console.log(this.username);
       console.log(email);
-      console.log(this.password);
+      console.log(password);
     },
     redirect: function () {
       this.$router.push("/login");

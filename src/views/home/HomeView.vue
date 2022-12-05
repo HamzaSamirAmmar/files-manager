@@ -2,16 +2,33 @@
   <div>
     <v-container>
       <v-col>
-        <div class="text-h3" style="color: #424242">Home</div>
+        <v-breadcrumbs :items="links">
+          <template v-slot:divider>
+            <v-icon>mdi-chevron-right</v-icon>
+          </template>
+        </v-breadcrumbs>
+        <div class="text-h3 mb-10" style="color: #424242">Engaged groups</div>
+        <GroupFilesTable />
       </v-col>
     </v-container>
   </div>
 </template>
 
 <script>
+import GroupFilesTable from "./components/GroupFilesTable.vue";
 export default {
-  components: {},
-  data: () => ({}),
+  components: {
+    GroupFilesTable,
+  },
+  data: () => ({
+    links: [
+      {
+        text: "Home",
+        disabled: false,
+        href: "/",
+      },
+    ],
+  }),
   methods: {},
 };
 </script>

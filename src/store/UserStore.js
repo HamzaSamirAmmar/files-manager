@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
+    //TODO token and its getter ,is \Authenicated remove 
     isAuthenticated: false,
     username: null,
     email: null,
