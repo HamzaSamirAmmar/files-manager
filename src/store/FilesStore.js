@@ -1,4 +1,8 @@
 import { defineStore } from "pinia";
+import Repository from "../repositories/RepositoryFactroy";
+import { File } from "@/models/FileModel";
+
+const fileRepository = Repository.get("files");
 
 export const useFileStore = defineStore("fileStore", {
     state: ()=>({
@@ -9,6 +13,17 @@ export const useFileStore = defineStore("fileStore", {
 
     },
     actions:{
-
+        fetchMyFiles(){
+            fileRepository.getOwnedFiles()
+            .then((response)=>{
+                var files=new Array();
+                response.data.data.map((file)=>{
+                    files.push(new File(file))
+                });
+                this.ownedFiles=files;
+            }).catch((err)=>{ 
+                console.log(err);
+            });
+        },
     }
 });

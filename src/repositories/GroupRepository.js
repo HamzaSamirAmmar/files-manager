@@ -5,4 +5,10 @@ export default {
     getOwnedGroups() {
         return Client.get(`/owned-groups`);
     },
+    deleteOwnedGroup(id){
+        return Client.delete(`/groups/${id}`);
+    },
+    createNewGroup(data){
+        return Client.post('/group',data);
+    }
 };

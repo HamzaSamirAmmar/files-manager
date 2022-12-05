@@ -1,8 +1,8 @@
 import Client from './clients/AxiosClient';
-const resource = '/files';
+// const resource = '/files';
 
 export default {
     getOwnedFiles() {
-        return Client.get(`${resource}`);
+        return Client.get(`/owned-files`);
     },
 };
