@@ -2,7 +2,7 @@
     <div>
         <DataTable :items="logs" :headers="headers" :loading="loading" ref="myTable">
         </DataTable>
-        <v-btn small color="secondary" class="mt-3" @click="exportTablePDF()">
+        <v-btn small color="primary" class="mt-3" @click="exportTablePDF()">
             export to pdf
             <v-icon class="ml-3">mdi-content-save</v-icon>
         </v-btn>

@@ -28,7 +28,7 @@ export default {
       this.message = data.message || 'missing "message".';
       this.color = data.color || "error";
       this.timer = data.timer || 2500;
-      this.icon = data.icon || "alert-circle-outline";
+      this.icon = data.icon || "mdi-alert-circle-outline";
       this.showSnackbar = true;
     },
   },

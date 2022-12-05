@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 // TODO: store state in the local storage
 
-export const userUserStore = defineStore("userStore", {
+export const useUserStore = defineStore("userStore", {
   state: () => ({
     isAuthenticated: false,
     username: null,
