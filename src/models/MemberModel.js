@@ -2,7 +2,7 @@ export class Member{
     id;
     name;
 
-    constructer(data){
+    constructor(data){
         this.id=data.id;
         this.name=data.name;
     }

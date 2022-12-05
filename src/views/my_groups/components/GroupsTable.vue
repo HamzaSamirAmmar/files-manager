@@ -63,27 +63,24 @@ export default {
             { text: 'Name', value: 'name' },
             { text: 'Actions', sortable: false, value: 'actions' },
         ],
-        editedIndex:'',
-        editedItem:{},       
+        selectedItem:{},       
     }),
     methods: {
         ...mapActions(useGroupStore,['fetchOwnedGroups']),
+        ...mapActions(useGroupStore,['deleteOwnedGroup']),
         showItem(item) {
             this.$router.push({ name: 'group-details', params: { id: item.id } })
         },
         showDeleteDialog(item) {
-            this.editedIndex = this.groups.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.selectedItem = Object.assign({}, item)
             this.dialogDelete = true;
         },
         closeDeleteDialog() {
             this.dialogDelete = false;
-            this.editedIndex= -1
-            this.editedItem= {}
+            this.selectedItem= {}
     },
-        //TODO send delete request (when it's a success remove it from list) 
         deleteItemConfirm() {
-        //send request
+        this.deleteOwnedGroup(this.selectedItem.id);
         //call this.closeDeleteDialog
         this.closeDeleteDialog();
         },

@@ -3,7 +3,7 @@ export class Member{
     name;
     accessToken;
 
-    constructer(data){
+    constructor(data){
         this.id=data.id;
         this.name=data.name;
         this.accessToken=data.accessToken;
