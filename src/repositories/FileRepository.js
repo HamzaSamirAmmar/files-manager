@@ -5,4 +5,7 @@ export default {
     getOwnedFiles() {
         return Client.get(`/owned-files`);
     },
+    getFileById(id){
+        return Client.get(`/files/${id}`);
+    }
 };

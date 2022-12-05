@@ -19,22 +19,22 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia';
+import { useFileStore } from '@/store/FilesStore';
 import FileLogsTable from './components/FileLogsTable.vue';
 
 export default {
   components: {
     FileLogsTable
   },
+  mounted(){
+    this.fetchFile(this.$route.params.id);
+  },
   data: () => ({
-    showDialog: false,
-    //TODO fetch 
-    file:{
-      id:'',
-      name:'fileName',
-      logs:[]
-    },
+    showDialog: false, 
   }),
   computed:{
+    ...mapState(useFileStore,['file']),
     links(){ return [
       {
         text: 'Home',
@@ -53,6 +53,9 @@ export default {
       },
     ]},
   },
+  methods:{
+    ...mapActions(useFileStore,['fetchFile'])
+  }
 }
 </script>
 
