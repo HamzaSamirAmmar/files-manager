@@ -95,12 +95,7 @@ export default {
           fileIds: this.selectedFiles
         };
         this.createNewGroup(data);
-        this.$root.VToast.show({
-          message: 'group created',
-          color: "success",
-          icon: "mdi-check",
-          timer: 3000,
-        });
+        this.$root.VToast.showSuccessMessage('group created');
       }
       //call this.closeDialog
       this.closeDialog();

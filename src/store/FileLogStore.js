@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactroy";
+import Repository from "@/repositories/RepositoryFactory";
 import { FileLog } from "@/models/FileLogModel";
 const fileRepository = Repository.get("filelogs");
 
