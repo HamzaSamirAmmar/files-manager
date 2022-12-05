@@ -3,7 +3,8 @@
         <DataTable :items="files" :headers="headers" :loading="loading" 
            :selectable="selectable" >
             <template v-slot:actions="slotProps">
-                <slot name="actions" :item="itemWithOrder(slotProps)"></slot>
+                <slot name="actions" :item="
+                    (slotProps)"></slot>
             </template>
         </DataTable>
     </div>

@@ -1,14 +1,15 @@
 <template>
-  <!-- we cas pass the password as a sync v-model -->
-  <!-- or we can get the email by getting the slotProps -->
-  <!-- remember that we can use $refs -->
-  <AuthForm :title="title" :password.sync="password">
+  <AuthForm :title="title">
     <!--From action-->
     <template v-slot:action="slotProps">
       <div class="text-center my-10">
         <CustomLoader :loading="loading">
           <template v-slot:default>
-            <v-btn @click="login(slotProps.email)" rounded color="primary" dark
+            <v-btn
+              @click="login(slotProps.email, slotProps.password)"
+              rounded
+              color="primary"
+              dark
               >Login</v-btn
             >
           </template>
@@ -38,16 +39,15 @@ export default {
   components: { AuthForm, CustomLoader },
   data: () => ({
     title: "Login to your account",
-    password: "",
     loading: false,
   }),
   methods: {
-    login: function (email) {
+    login: function (email, password) {
       // TODO: post login using auth repository
-      this.$root.VToast.showSuccessMessage("Network error");
+      this.$root.VToast.showErrorMessage("Network error");
       this.loading = true;
       console.log(email);
-      console.log(this.password);
+      console.log(password);
     },
     redirect: function () {
       this.$router.push("/register");
