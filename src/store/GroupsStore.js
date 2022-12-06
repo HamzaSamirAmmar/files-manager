@@ -13,7 +13,11 @@ export const useGroupStore = defineStore("groupStore", {
         ownedGroupsError: '',
 
         joinedGroups: [],
-        groupOfId: {},
+
+        group: {},
+        groupLoading:true,
+        groupHasError:false,
+        groupError:'',
     }),
     getters: {
 
@@ -54,6 +58,19 @@ export const useGroupStore = defineStore("groupStore", {
                     this.ownedGroupsHasError = true;
                     this.ownedGroupsError = err.response.data.message;
                 });
+        },
+        fetchGroup(id){
+            groupRepository.getGroup(id)
+            .then((response) => {
+               var group=new Group(response.data.data)
+                this.group = group;
+                this.groupLoading=false;
+            })
+            .catch((err) => {
+                console.log(err);
+                this.groupHasError = true;
+                this.groupError = err.response.data.message;
+            });
         }
     }
 });

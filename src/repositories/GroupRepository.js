@@ -10,5 +10,8 @@ export default {
     },
     createNewGroup(data){
         return Client.post('/group',data);
+    },
+    getGroup(id){
+        return Client.get(`/groups/${id}`);
     }
 };

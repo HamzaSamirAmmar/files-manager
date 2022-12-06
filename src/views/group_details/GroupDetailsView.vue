@@ -25,63 +25,40 @@
           <v-spacer></v-spacer>
           <CreateButton entityName="file" @click.native="toggleAddFilesDialog()"></CreateButton>
         </v-row>
-        <FilesTable ref="filesTable" :selectable="selectable" class="ml-5 pb-2" fetchFiles="groupFiles" :groupId="group.id">
-          <template v-slot:actions="slotProps">
-            <v-icon small @click="showDeleteDialog(slotProps.item)">
-              mdi-note-remove
-            </v-icon>
-          </template>
-        </FilesTable>
+        <GroupFilesTable></GroupFilesTable>
       </v-col>
     </v-container>
     <AddMembersDialog :showCondition="addMembersDialog" @closed="toggleAddMembersDialog()"></AddMembersDialog>
     <AddFilesDialog :showCondition="addFilesDialog" @closed="toggleAddFilesDialog()"></AddFilesDialog>
-    <DeleteDialog :showCondition="dialogDelete" @closed="closeDeleteDialog()">
-      <template v-slot:title>
-        Are you sure you want to remove this file from group?
-      </template>
-      <template v-slot:actions>
-        <v-btn color="blue darken-1" text @click="closeDeleteDialog()">Cancel</v-btn>
-        <v-btn color="blue darken-1" text @click="deleteItemConfirm()">OK</v-btn>
-      </template>
-    </DeleteDialog>
   </div>
 </template>
 
 <script>
 import CreateButton from './../../components/buttons/CreateButton.vue';
 import MembersTable from './components/MembersTable.vue';
-import FilesTable from './../../components/FilesTable.vue';
+import GroupFilesTable from './components/GroupFilesTable.vue';
 import AddMembersDialog from './components/AddMembersDialog.vue';
 import AddFilesDialog from './components/AddFilesDialog.vue';
-import DeleteDialog from './../../components/FormDialog.vue';
+import { useGroupStore } from '@/store/GroupsStore';
+import { mapActions, mapState } from 'pinia';
 
 export default {
   components: {
     CreateButton,                                                                           
     MembersTable,
-    FilesTable,
+    GroupFilesTable,
     AddMembersDialog, 
     AddFilesDialog,
-    DeleteDialog
+  },
+  mounted(){
+    this.fetchGroup(this.$route.params.id);
   },
   data: () => ({
-    selectable:false,
     addMembersDialog: false,
     addFilesDialog: false,
-    dialogDelete: false,
-    //TODO change it when data is fetched
-    loading:false,
-    group: {
-      id: 1,
-      name: 'GroupName',
-      files: [],
-      members: [],
-    },
-    editedIndex: -1,
-    editedItem: {},
   }),
   computed: {
+    ...mapState(useGroupStore,['group','groupHasError','groupError']),
     links() {
       return [
         {
@@ -102,6 +79,19 @@ export default {
       ]
     },
   },
+  watch: {
+    groupHasError: {
+            immediate: true,
+            deep: true,
+            handler(newValue) {
+                this.$nextTick(() => {
+                    if(newValue){
+                        this.$root.VToast.showErrorMessage(this.groupError);         
+                    }
+                })
+            }
+        }
+    },
   methods: {
     toggleAddMembersDialog() {
       this.addMembersDialog = !this.addMembersDialog;
@@ -109,23 +99,7 @@ export default {
     toggleAddFilesDialog() {
       this.addFilesDialog = !this.addFilesDialog;
     },
-    showDeleteDialog(item) {
-      this.editedIndex = item.order;
-      this.editedItem = Object.assign({}, item)
-      this.$refs.filesTable.removeFileOfIndex(item.order);
-      this.dialogDelete = true;
-    },
-    closeDeleteDialog() {
-      this.dialogDelete = false;
-      this.editedIndex= -1
-      this.editedItem= {}
-    },
-    //TODO send delete request (when it's a success remove it from list)
-    deleteItemConfirm() {
-      //send request
-      //call this.closeDeleteDialog
-      this.closeDeleteDialog();
-    },
+    ...mapActions(useGroupStore,['fetchGroup']),
   }
 }
 </script>

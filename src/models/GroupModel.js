@@ -1,5 +1,5 @@
-import File from './FileModel';
-import Member from './MemberModel';
+import {File} from './FileModel';
+import {Member} from './MemberModel';
 
 export class Group {
     id;
@@ -12,12 +12,12 @@ export class Group {
         this.name = data.name;
         if (data.files != undefined) {
             data.files.map((file) => {
-                this.files.push(new File(file))
+                this.files.push(new File(file));
             });
         }
         if (data.members != undefined) {
             data.members.map((member) => {
-                this.files.push(new Member(member))
+                this.members.push(new Member(member))
             });
         }
     }

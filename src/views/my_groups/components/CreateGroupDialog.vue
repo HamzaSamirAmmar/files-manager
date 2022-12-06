@@ -82,10 +82,8 @@ export default {
     closeDialog() {
       this.show = false;
       this.$emit('closed');
-      this.selectedUsers = [];
-      this.selectedFiles = [];
+      this.$refs.createGroupForm.reset();
     },
-    //TODO send create request
     createGroup() {
       //validate
       if (this.$refs.createGroupForm.validate()) {
@@ -96,9 +94,9 @@ export default {
         };
         this.createNewGroup(data);
         this.$root.VToast.showSuccessMessage('group created');
+        //call this.closeDialog
+        this.closeDialog();
       }
-      //call this.closeDialog
-      this.closeDialog();
     },
   },
 };
