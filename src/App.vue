@@ -14,10 +14,11 @@
 <script>
 import CustomDrawer from "./components/CustomDrawer.vue";
 import VToast from "./components/VToast.vue";
+
 export default {
   data() {
     return {
-      isAuth: true,
+      isAuth: localStorage.getItem("user") !== null,
     };
   },
   components: {

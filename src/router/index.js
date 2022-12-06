@@ -8,6 +8,7 @@ import MyFilesView from "../views/my_files/MyFilesView.vue";
 import ReservedFilesView from "../views/reserved_files/ReservedFilesView.vue";
 import GroupDetailsView from "../views/group_details/GroupDetailsView.vue";
 import FileHistoryView from "../views/file_history/FileHistoryView.vue";
+// import { useUserStore } from "../store/UserStore";
 
 Vue.use(VueRouter);
 
@@ -61,17 +62,20 @@ const router = new VueRouter({
 });
 
 // TODO take this value from pinia (useUserStore)
-let isAuth = true;
+// let isAuth = localStorage.getItem("user") !== null;
 
-router.beforeEach((to, from, next) => {
-  if (to.path !== "/login" && to.path !== "/register") {
-    if (!isAuth) {
-      next("/login");
-    } else {
-      next();
-    }
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   // const userStore = useUserStore();
+//   // console.log(userStore);
+//   if (isAuth) {
+//     if (to.path == "/login" || to.path == "/register") {
+//       next("/");
+//     }
+//     next();
+//   } else if (to.path !== "/login" && to.path !== "/register") {
+//     next("/login");
+//   }
+//   next();
+// });
 
 export default router;
