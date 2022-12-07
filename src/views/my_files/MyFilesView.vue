@@ -15,6 +15,7 @@
             @click.native="showCreateDialog()"
           ></CreateButton>
         </v-row>
+        <MyFilesTable />
       </v-col>
     </v-container>
   </div>
@@ -22,10 +23,12 @@
 
 <script>
 import CreateButton from "./../../components/buttons/CreateButton.vue";
+import MyFilesTable from "./components/MyFilesTable.vue";
 
 export default {
   components: {
     CreateButton,
+    MyFilesTable,
   },
   data: () => ({
     showDialog: false,

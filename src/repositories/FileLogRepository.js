@@ -1,7 +1,7 @@
-import Client from './clients/AxiosClient';
+import Client from "./clients/AxiosClient";
 
 export default {
-    getLogsOfFile(id) {
-        return Client.get(`/files/${id}/history`);
-    },
+  getLogsOfFile(id) {
+    return Client.get(`/files/${id}/history`);
+  },
 };

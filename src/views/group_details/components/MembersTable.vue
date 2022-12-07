@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DataTable :items="members" :headers="headers" :loading="loading">
+        <DataTable :items="groupMembers" :headers="headers" :loading="loading">
             <template v-slot:actions="slotProps">
                 <v-icon small @click="showDeleteDialog(slotProps.item)">
                     mdi-account-remove
@@ -22,11 +22,22 @@
 <script>
 import DataTable from './../../../components/DataTable.vue';
 import DeleteDialog from './../../../components/FormDialog.vue';
+import { useMemberStore } from '@/store/MembersStore';
+import { mapActions, mapState } from 'pinia';
 
 export default {
     components: {
         DataTable,
         DeleteDialog
+    },
+    mounted(){
+        this.fetchGroupMembers(this.groupId);
+    },
+    computed:{
+        ...mapState(useMemberStore,['groupMembers','loading','hasError','error']),
+        groupId(){
+            return this.$route.params.id
+        },
     },
     data: () => ({
         dialogDelete: false,
@@ -39,39 +50,22 @@ export default {
             { text: 'Name', value: 'name' },
             { text: 'Actions', sortable: false, value: 'actions' },
         ],
-        loading: false,
-        members: [
-            {
-                id: 1,
-                name: "member 1",
-            },
-            {
-                id: 2,
-                name: "member 2",
-            },
-            {
-                id: 3,
-                name: "member 3",
-            },
-        ],
-        editedIndex:'',
         editedItem:{}, 
     }),
     methods: {
+        ...mapActions(useMemberStore,['fetchGroupMembers','removeMemberFromGroup']),
         showDeleteDialog(item) {
-            this.editedIndex = this.members.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true;
         },
         closeDeleteDialog() {
             this.dialogDelete = false;
-            this.editedIndex= -1
             this.editedItem= {}
         },
         //TODO send delete request (when it's a success remove it from list)
         deleteItemConfirm() {
         //send request
-
+       this.removeMemberFromGroup(this.groupId,this.editedItem.id)
         //close dialog
         this.closeDeleteDialog();
         },

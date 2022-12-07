@@ -5,8 +5,6 @@ import router from "../router/index";
 
 const authRepository = Repository.get("auth");
 
-// TODO: store state in the local storage
-
 export const useUserStore = defineStore("userStore", {
   state: () => ({
     user: localStorage.getItem("user") || null,
@@ -60,6 +58,7 @@ export const useUserStore = defineStore("userStore", {
     },
     logout() {
       this.user = null;
+      router.push("/login");
     },
   },
 });

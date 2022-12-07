@@ -1,13 +1,17 @@
 // import router from "@/router";
 import axios from "axios";
+// import pinia from '../../store';
+// import { useUserStore } from "@/store/UserStore";
+
+// const userStore=useUserStore(pinia);
+// FIXME const userAccessToken=userStore.getToken();
 
 const baseDomain = process.env.VUE_APP_API_DOMAIN;
 const baseURL = `${baseDomain}/api`;
 console.log(baseURL);
 
 // TODO take user token local storage
-console.log(localStorage.getItem("user").token);
-const userAccessToken = "36|3qg6msdQRxCwycdHZdY44cINT5b81kUyFnGJPnrb";
+const userAccessToken = "46|YzhUrWIjFzTALFfoeqS9B9WdnnF1o2sZsR3JIVpH";
 
 const httpClient = axios.create({
   baseURL,

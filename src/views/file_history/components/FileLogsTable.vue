@@ -33,7 +33,7 @@ export default {
             handler(newValue) {
                 this.$nextTick(() => {
                     if(newValue){
-                        this.$root.VToast.showErrorMessage({message:this.error});         
+                        this.$root.VToast.showErrorMessage(this.error);         
                     }
                 })
             }

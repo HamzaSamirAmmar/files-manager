@@ -7,18 +7,36 @@
             <v-icon>mdi-chevron-right</v-icon>
           </template>
         </v-breadcrumbs>
-        <div class="text-h3 mb-10" style="color: #424242">Engaged groups</div>
-        <GroupFilesTable />
+        <div class="text-h3" style="color: #424242">Joined Groups</div>
+        <CustomLoader :loading="joinedGroups.loading">
+          <template v-slot:default>
+            <JoinedGroupsTable />
+          </template>
+        </CustomLoader>
       </v-col>
     </v-container>
   </div>
 </template>
 
 <script>
-import GroupFilesTable from "./components/GroupFilesTable.vue";
+import JoinedGroupsTable from "./components/JoinedGroupsTable.vue";
+import CustomLoader from "../../components/CustomLoader.vue";
+import { useGroupStore } from "@/store/GroupsStore";
+import { mapActions, mapState } from "pinia";
+
 export default {
   components: {
-    GroupFilesTable,
+    JoinedGroupsTable,
+    CustomLoader,
+  },
+  computed: {
+    ...mapState(useGroupStore, ["joinedGroups"]),
+  },
+  mounted() {
+    this.fetchJoinedGroups();
+  },
+  methods: {
+    ...mapActions(useGroupStore, ["fetchJoinedGroups"]),
   },
   data: () => ({
     links: [
@@ -29,7 +47,6 @@ export default {
       },
     ],
   }),
-  methods: {},
 };
 </script>
 
