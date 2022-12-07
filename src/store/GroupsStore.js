@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactory";
+import Repository from "@/repositories/RepositoryFactory";
 import { Group } from "@/models/GroupModel";
 
 const groupRepository = Repository.get("groups");

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DataTable :items="logs" :headers="headers" :loading="loading" ref="myTable">
+        <DataTable :items="fileLogs" :headers="headers" :loading="loading" ref="myTable">
         </DataTable>
         <v-btn small color="primary" class="mt-3" @click="exportTablePDF()">
             export to pdf
@@ -12,11 +12,32 @@
 
 <script>
 import DataTable from './../../../components/DataTable.vue';
+import { useFileLogStore } from '@/store/FileLogStore';
+import { mapActions, mapState } from 'pinia';
 const { jsPDF } = window.jspdf;
 
 export default {
     components: {
         DataTable,
+    },
+    mounted(){
+        this.fetchFileLogs(this.$route.params.id);
+    },
+    computed:{
+       ...mapState(useFileLogStore,['fileLogs','loading','hasError','error']), 
+    },
+    watch: {
+        hasError: {
+            immediate: true,
+            deep: true,
+            handler(newValue) {
+                this.$nextTick(() => {
+                    if(newValue){
+                        this.$root.VToast.showErrorMessage({message:this.error});         
+                    }
+                })
+            }
+        }
     },
     data: () => ({
         headers: [
@@ -30,59 +51,9 @@ export default {
             { text: 'Actor Name', value: 'actor.name' },
             { text: 'Action time', value: 'created_at' },
         ],
-        //TODO change it when data is fetched
-        loading: true,
-        // TODO fecth from repo(  put in created() )
-        logs: [
-            {
-                id: 1,
-                action: "created",
-                created_at: '10/10/2010',
-                actor: {
-                    id: 1,
-                    name: 'actor name',
-                }
-            },
-            {
-                id: 2,
-                action: "checked-in",
-                created_at: '11/10/2010',
-                actor: {
-                    id: 2,
-                    name: 'actor name',
-                }
-            },
-            {
-                id: 3,
-                action: "updated",
-                created_at: '12/10/2010',
-                actor: {
-                    id: 2,
-                    name: 'actor name',
-                }
-            },
-            {
-                id: 4,
-                action: "checked-out",
-                created_at: '13/10/2010',
-                actor: {
-                    id: 2,
-                    name: 'actor name',
-                }
-            },
-            {
-                id: 5,
-                action: "checked-in",
-                created_at: '15/10/2010',
-                actor: {
-                    id: 1,
-                    name: 'actor name',
-                }
-            },
-
-        ],
     }),
     methods: {
+        ...mapActions(useFileLogStore,['fetchFileLogs']),
         exportTablePDF() {
             var source = this.$refs["myTable"];
             let rows = [];

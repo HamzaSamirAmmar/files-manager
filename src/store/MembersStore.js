@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactory";
+import Repository from "@/repositories/RepositoryFactory";
 import { Member } from "@/models/MemberModel";
 
 const membersRepository = Repository.get("members");

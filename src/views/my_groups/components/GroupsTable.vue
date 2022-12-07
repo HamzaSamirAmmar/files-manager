@@ -46,7 +46,7 @@ export default {
             handler(newValue) {
                 this.$nextTick(() => {
                     if(newValue){
-                        this.$root.VToast.show({message:this.ownedGroupsError});         
+                        this.$root.VToast.showErrorMessage({message:this.ownedGroupsError});         
                     }
                 })
             }

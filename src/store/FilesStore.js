@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactory";
+import Repository from "@/repositories/RepositoryFactory";
 import { File } from "@/models/FileModel";
 
 const fileRepository = Repository.get("files");
@@ -7,7 +7,12 @@ const fileRepository = Repository.get("files");
 export const useFileStore = defineStore("fileStore", {
     state: ()=>({
         ownedFiles:[],
+        ownedFilesLoading:true,
+        ownedFilesHasError:false,
+        ownedFilesError:'',
+
         reservedFiles:[],
+        file:{},
     }),
     getters:{
 
@@ -21,9 +26,20 @@ export const useFileStore = defineStore("fileStore", {
                     files.push(new File(file))
                 });
                 this.ownedFiles=files;
+                this.ownedFilesLoading=false;
             }).catch((err)=>{ 
+                this.ownedFilesHasError=true;
+                this.ownedFilesError=err.response.data.message;
                 console.log(err);
             });
         },
+        fetchFile(id){
+            fileRepository.getFileById(id)
+            .then((response)=>{
+                this.file=new File(response.data.data);
+            }).catch((err)=>{ 
+                console.log(err);
+            });
+        }
     }
 });
