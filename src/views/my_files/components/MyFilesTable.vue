@@ -71,7 +71,7 @@ export default {
       this.selectedItem = {};
     },
     deleteItemConfirm() {
-      this.deleteOwnedFile(this.selectedItem.id,this.selectedItem.order);
+      this.deleteOwnedFile(this.selectedItem.id);
       this.closeDeleteDialog();
     },
   },

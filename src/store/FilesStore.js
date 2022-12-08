@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import Repository from "@/repositories/RepositoryFactory";
 import { File } from "@/models/FileModel";
-import { BaseState } from "./BaseState";
 
 const fileRepository = Repository.get("files");
 
@@ -11,38 +10,11 @@ export const useFileStore = defineStore("fileStore", {
     ownedFilesLoading: true,
     ownedFilesHasError: false,
     ownedFilesError: "",
-
-    checkIn: new BaseState(),
-
-    // checkOutLoading: false,
-    // checkOutMessage: "",
-    // checkOutError: false,
-
     reservedFiles: [],
     file: {},
   }),
   getters: {},
   actions: {
-    postCheckIn(id) {
-      this.checkIn.toggleLoading(true);
-      fileRepository
-        .checkIn(id)
-        .then((response) => {
-          console.log(response.data);
-          this.checkIn.toggleLoading(false);
-          this.checkIn.showMessage("File checked successfully :)", false);
-          // TODO change reserver name in the files table
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log(err.response);
-          this.checkIn.toggleLoading(false);
-          this.checkIn.showMessage(
-            "OOoops something went wrong.. try again later:(",
-            true
-          ); // TODO: replace the message with error message
-        });
-    },
     fetchMyFiles() {
       fileRepository
         .getOwnedFiles()
@@ -70,14 +42,20 @@ export const useFileStore = defineStore("fileStore", {
           console.log(err);
         });
     },
-    deleteOwnedFile(id, index) {
+    deleteOwnedFile(id) {
+      this.ownedFilesLoading = true;
       fileRepository
         .deleteOwnedFile(id)
         .then((response) => {
+          this.ownedFilesLoading = false;
           console.log(response);
-          this.ownedFiles.splice(index, 1);
+          this.ownedFiles.splice(
+            this.ownedFiles.indexOf((file) => file.id == id),
+            1
+          );
         })
         .catch((err) => {
+          this.ownedFilesLoading = false;
           console.log(err);
         });
     },
