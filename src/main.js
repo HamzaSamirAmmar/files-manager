@@ -15,5 +15,5 @@ new Vue({
   vuetify,
   router,
   pinia,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");

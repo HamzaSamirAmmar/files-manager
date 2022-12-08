@@ -15,7 +15,7 @@
                 >
                   {{ title }}
                 </h1>
-                <v-form class="mx-12 mt-4">
+                <v-form  ref="authForm" class="mx-12 mt-4">
                   <v-text-field
                     label="Email"
                     name="Email"
@@ -40,7 +40,7 @@
                 </v-form>
               </v-card-text>
               <!-- Form action button -->
-              <slot name="action" :email="email" :password="password"></slot>
+              <slot name="action" :email="email" :password="password" ></slot>
             </v-col>
             <!-- Right side -->
             <v-col cols="12" md="4" class="primary">
@@ -75,11 +75,14 @@ export default {
     ],
     passwordRules: [
       (v) => !!v || "Password is required",
-      (v) => (v && v.length >= 6) || "Password must be at least 6 characters",
+      (v) => (v && v.length >= 4) || "Password must be at least 4 characters",
     ],
   }),
   props: {
     title: String,
+  },
+  methods:{
+    valid() {return this.$refs.authForm.validate()}
   },
   computed: {},
 };

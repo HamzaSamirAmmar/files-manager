@@ -1,18 +1,27 @@
-import Client from './clients/AxiosClient';
+import Client from "./clients/AxiosClient";
 // const resource = '/files';
 
 export default {
     getOwnedFiles() {
         return Client.get(`/owned-files`);
     },
-    getFileById(id){
+    getFileById(id) {
         return Client.get(`/files/${id}`);
     },
-    addFilesToGroup(groupId,filesIds){
-        var data={filesIds:filesIds}
-        return Client.post(`/groups/${groupId}/add-files`,data);
-     },
-     removeFileFromGroup(groupId,fileId){
+    addFilesToGroup(groupId, filesIds) {
+        var data = { filesIds: filesIds }
+        return Client.post(`/groups/${groupId}/add-files`, data);
+    },
+    removeFileFromGroup(groupId, fileId) {
         return Client.delete(`/groups/${groupId}/files/${fileId}`)
-     },
+    },
+    checkIn(id) {
+        return Client.put(`/files/${id}/check-in`);
+    },
+    checkOut(id) {
+        return Client.put(`/files/${id}/check-out`);
+    },
+    deleteOwnedFile(id) {
+        return Client.delete(`/files/${id}`);
+    },
 };

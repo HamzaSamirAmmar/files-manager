@@ -1,17 +1,18 @@
-import UserRepository from './UserRepository';
-import FileRepository from './FileRepository';
-import GroupRepository from './GroupRepository';
-import MemberRepository from './MemberRepository';
-import FileLogRepository from './FileLogRepository';
-
+import UserRepository from "./UserRepository";
+import FileRepository from "./FileRepository";
+import GroupRepository from "./GroupRepository";
+import MemberRepository from "./MemberRepository";
+import FileLogRepository from "./FileLogRepository";
+import AuthRepository from "./AuthRepository";
 
 const repositories = {
-    'users': UserRepository,
-    'files':FileRepository,
-    'groups':GroupRepository,
-    'members':MemberRepository,
-    'filelogs':FileLogRepository
-}
+  auth: AuthRepository,
+  users: UserRepository,
+  files: FileRepository,
+  groups: GroupRepository,
+  members: MemberRepository,
+  filelogs: FileLogRepository,
+};
 export default {
-    get: name => repositories[name]
+  get: (name) => repositories[name],
 };

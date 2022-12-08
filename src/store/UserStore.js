@@ -1,45 +1,64 @@
+import { User } from "@/models/UserModel";
 import { defineStore } from "pinia";
+import Repository from "../repositories/RepositoryFactory";
+import router from "../router/index";
 
-// TODO: store state in the local storage
+const authRepository = Repository.get("auth");
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
-    //TODO token and its getter ,is \Authenicated remove 
-    isAuthenticated: false,
-    username: null,
-    email: null,
-    id: null,
+    user: localStorage.getItem("user") || null,
+    loading: false,
   }),
   getters: {
     isAuthenticated() {
-      return this.isAuthenticated;
+      return this.user.accessToken === null;
     },
-    user() {
-      return {
-        username: this.username,
-        email: this.email,
-        id: this.id,
-      };
+    getUser() {
+      return this.user;
     },
-    id() {
-      return this.id;
+    getId() {
+      return this.user.id;
+    },
+    getToken() {
+      return this.user.accessToken;
     },
   },
   actions: {
-    setUser(user) {
-      this.username = user.username;
-      this.email = user.email;
-      this.id = user.id;
-      this.isAuthenticated = true;
+    login(email, password) {
+      console.log(this.user);
+      this.loading = true;
+      authRepository
+        .login(email, password)
+        .then((response) => {
+          this.loading = false;
+          this.user = new User(response.data);
+          localStorage.setItem("user", this.user);
+          router.push("/");
+        })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
     },
-    removeUser() {
-      this.username = null;
-      this.email = null;
-      this.id = null;
-      this.isAuthenticated = false;
+    register(email, password, username) {
+      this.loading = true;
+      authRepository
+        .register(email, password, username)
+        .then((response) => {
+          this.loading = false;
+          this.user = new User(response.data);
+          localStorage.setItem("user", this.user);
+          router.push("/");
+        })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
     },
-    toggleAuth(value) {
-      this.isAuthenticated = value || !this.isAuthenticated;
+    logout() {
+      this.user = null;
+      router.push("/login");
     },
   },
 });

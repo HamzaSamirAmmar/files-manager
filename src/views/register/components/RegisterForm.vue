@@ -18,7 +18,7 @@
         <CustomLoader :loading="loading">
           <template v-slot:default>
             <v-btn
-              @click="register(slotProps.email, slotProps.password)"
+              @click="postRegister(slotProps.email, slotProps.password)"
               rounded
               color="primary"
               dark
@@ -46,11 +46,12 @@
 <script>
 import AuthForm from "@/components/AuthForm.vue";
 import CustomLoader from "../../../components/CustomLoader.vue";
+import { useUserStore } from "@/store/UserStore";
+import { mapActions, mapState } from "pinia";
 
 export default {
   components: { AuthForm, CustomLoader },
   data: () => ({
-    loading: false,
     title: "Create your account",
     username: "",
     usernameRules: [
@@ -58,13 +59,14 @@ export default {
       (v) => (v && v.length >= 4) || "Username must be at least 4 characters",
     ],
   }),
+  computed: {
+    ...mapState(useUserStore, ["loading"]),
+  },
   methods: {
-    register: function (email, password) {
-      // TODO: post register the using auth repository
-      this.loading = true;
-      console.log(this.username);
-      console.log(email);
-      console.log(password);
+    ...mapActions(useUserStore, ["register"]),
+    postRegister: function (email, password) {
+      // TODO: checkValidation
+      this.register(email,password,this.username);
     },
     redirect: function () {
       this.$router.push("/login");

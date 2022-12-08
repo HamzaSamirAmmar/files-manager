@@ -1,12 +1,12 @@
 <template>
-  <AuthForm :title="title">
+  <AuthForm ref="authForm" :title="title">
     <!--From action-->
     <template v-slot:action="slotProps">
       <div class="text-center my-10">
         <CustomLoader :loading="loading">
           <template v-slot:default>
             <v-btn
-              @click="login(slotProps.email, slotProps.password)"
+              @click="postLogin(slotProps.email, slotProps.password)"
               rounded
               color="primary"
               dark
@@ -34,20 +34,26 @@
 <script>
 import AuthForm from "@/components/AuthForm.vue";
 import CustomLoader from "../../../components/CustomLoader.vue";
+import { useUserStore } from "@/store/UserStore";
+import { mapActions, mapState } from "pinia";
 
 export default {
   components: { AuthForm, CustomLoader },
   data: () => ({
     title: "Login to your account",
-    loading: false,
   }),
+  computed: {
+    ...mapState(useUserStore, ["loading"]),
+  },
   methods: {
-    login: function (email, password) {
-      // TODO: post login using auth repository
-      this.$root.VToast.showErrorMessage("Network error");
-      this.loading = true;
-      console.log(email);
-      console.log(password);
+    ...mapActions(useUserStore, ["login"]),
+    postLogin: function (email, password) {
+      // this.$root.VToast.showErrorMessage("Network error");
+      if (this.$refs.authForm.valid()) {
+        console.log(email);
+        console.log(password);
+        this.login(email, password);
+      }
     },
     redirect: function () {
       this.$router.push("/register");

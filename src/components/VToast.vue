@@ -38,6 +38,14 @@ export default {
       this.icon = "alert-circle-outline";
       this.showSnackbar = true;
     },
+    showMessage(state) {
+      this.message = state.message;
+      this.color = state.error ? "error" : "success";
+      this.icon = state.error ? "alert-circle-outline" : "mdi-check";
+      this.timer = 2500;
+      this.showSnackbar = true;
+      state.clearMessage();
+    },
   },
 };
 </script>
