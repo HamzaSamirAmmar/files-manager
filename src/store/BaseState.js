@@ -17,7 +17,6 @@ export class BaseState {
   }
 
   toggleLoading(loading) {
-    console.log("خلف المنعجي");
     this.loading = loading || !this.loading;
   }
 
