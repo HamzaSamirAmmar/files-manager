@@ -1,9 +1,12 @@
 <template>
     <div>
-        <FilesTable ref="filesTable" class="ml-5 pb-2" :files="files"  :loading="loading">
+        <FilesTable ref="filesTable" class="ml-5 pb-2" :files="group.files" :loading="groupLoading">
             <template v-slot:actions="slotProps">
-                <v-icon small @click="showDeleteDialog(slotProps.item)">
+                <v-icon class="ml-2" small @click="showDeleteDialog(slotProps.item)">
                     mdi-note-remove
+                </v-icon>
+                <v-icon class="ml-2" small @click="showFileHistory(slotProps.item)">
+                    mdi-history
                 </v-icon>
             </template>
         </FilesTable>
@@ -22,67 +25,44 @@
 <script>
 import FilesTable from './../../../components/FilesTable.vue';
 import DeleteDialog from './../../../components/FormDialog.vue';
+import { useGroupStore } from '@/store/GroupsStore';
+import { mapActions, mapState } from 'pinia';
 
 export default {
     components: {
         FilesTable,
         DeleteDialog,
     },
+    computed: {
+        ...mapState(useGroupStore, ['group', 'groupLoading', 'groupHasError', 'groupError'])
+    },
     data() {
         return {
-            //TODO change it when data is fetched
-            loading: true,
-            //TODO fetch files depanding on props
-            files: [
-                {
-                    id: 1,
-                    name: "file 1",
-                    status: 'free',
-                    reserver: null,
-
-                },
-                {
-                    id: 2,
-                    name: "file 2",
-                    status: 'reserved',
-                    reserver: {
-                        id: 1,
-                        name: 'reserver1'
-                    }
-                },
-                {
-                    id: 3,
-                    name: "file 3",
-                    status: 'reserved',
-                    reserver: {
-                        id: 1,
-                        name: 'reserver2'
-                    }
-                },
-            ],
             dialogDelete: false,
-            editedIndex: -1,
             editedItem: {},
         }
     },
     methods: {
+        ...mapActions(useGroupStore, ['removeFileFromGroup']),
         showDeleteDialog(item) {
-            this.editedIndex = item.order;
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true;
         },
         closeDeleteDialog() {
             this.dialogDelete = false;
-            this.editedIndex = -1
             this.editedItem = {}
         },
         //TODO send delete request (when it's a success remove it from list)
         deleteItemConfirm() {
             //send request
+            var groupId = this.$route.params.id;
+            this.removeFileFromGroup(groupId, this.editedItem.id);
+            this.$root.VToast.showSuccessMessage('file removed');
             //call this.closeDeleteDialog
             this.closeDeleteDialog();
-            //
-            this.$refs.filesTable.removeFileOfIndex(this.editedIndex);
+        },
+        showFileHistory(item){
+            this.$router.push({ name: 'file-history', params: { id: item.id } })
         }
     },
 }

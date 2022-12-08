@@ -31,6 +31,7 @@ export const useMemberStore = defineStore("memberStore", {
             });
         },
         fetchGroupMembers(groupId){
+            this.loading=true;
             membersRepository.getMembersOfGroup(groupId)
             .then((response)=>{
                 var members=new Array();

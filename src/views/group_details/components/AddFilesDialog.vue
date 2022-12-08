@@ -6,7 +6,7 @@
     <template v-slot:body>
       <v-select
           v-model="selectedFiles"
-          :items="myFiles"
+          :items="ownedFiles"
           label="Select files"
           multiple
           chips
@@ -32,12 +32,23 @@
 
 <script>
 import FormDialog from './../../../components/FormDialog.vue';
+import { useFileStore } from '@/store/FilesStore';
+import { useGroupStore } from '@/store/GroupsStore';
+import { mapActions, mapState } from 'pinia';
+
 export default {
   components: {
     FormDialog
   },
   props: {
     showCondition: Boolean
+  },
+  computed:{
+    ...mapState(useFileStore,['ownedFiles']),
+    ...mapState(useGroupStore,['group'])
+  },
+  mounted(){
+    this.fetchMyFiles();
   },
   watch: {
     showCondition: {
@@ -50,32 +61,27 @@ export default {
   data() {
     return {
       show: this.showCondition,
-      //TODO fetch owned files 
-      myFiles: [
-        {
-          id: 1,
-          name: 'file1',
-        },
-        {
-          id: 2,
-          name: 'file2',
-        },
-      ],
       selectedFiles: [],
     }
   },
   methods: {
+    ...mapActions(useFileStore,['fetchMyFiles']),
+    ...mapActions(useGroupStore,['addFilesToGroup']),
     closeDialog() {
       this.show = false;
       this.$emit('closed');
       this.selectedFiles=[];
     },
-    //TODO send create request
     addFiles(){
       //send request
-
-      //close dialog
-      this.closeDialog();
+      if(this.selectedFiles.length!=0){
+        var groupId=this.$route.params.id;
+        this.addFilesToGroup(groupId,this.selectedFiles);
+        this.$root.VToast.showSuccessMessage('files added');
+        //close dialog
+        this.closeDialog();
+        this.selectedFiles=[];
+      }
     },
   },
 };

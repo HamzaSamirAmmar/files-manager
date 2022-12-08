@@ -1,8 +1,8 @@
 import axios from "axios";
-import pinia from '../../store';
-import { useUserStore } from "@/store/UserStore";
+// import pinia from '../../store';
+// import { useUserStore } from "@/store/UserStore";
 
-const userStore=useUserStore(pinia);
+// const userStore=useUserStore(pinia);
 // FIXME const userAccessToken=userStore.getToken();
 
 const baseDomain = process.env.VUE_APP_API_DOMAIN;
