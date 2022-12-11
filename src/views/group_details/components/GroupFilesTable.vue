@@ -1,6 +1,6 @@
 <template>
     <div>
-        <FilesTable ref="filesTable" class="ml-5 pb-2" :files="group.files" :loading="groupLoading">
+        <FilesTable ref="filesTable" class="ml-5 pb-2" :files="group.data.files" :loading="group.loading">
             <template v-slot:actions="slotProps">
                 <v-icon class="ml-2" small @click="showDeleteDialog(slotProps.item)">
                     mdi-note-remove
@@ -34,7 +34,7 @@ export default {
         DeleteDialog,
     },
     computed: {
-        ...mapState(useGroupStore, ['group', 'groupLoading', 'groupHasError', 'groupError'])
+        ...mapState(useGroupStore, ['group'])
     },
     data() {
         return {
@@ -52,13 +52,9 @@ export default {
             this.dialogDelete = false;
             this.editedItem = {}
         },
-        //TODO send delete request (when it's a success remove it from list)
         deleteItemConfirm() {
-            //send request
             var groupId = this.$route.params.id;
             this.removeFileFromGroup(groupId, this.editedItem.id);
-            this.$root.VToast.showSuccessMessage('file removed');
-            //call this.closeDeleteDialog
             this.closeDeleteDialog();
         },
         showFileHistory(item){

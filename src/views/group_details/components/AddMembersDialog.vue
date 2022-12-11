@@ -15,10 +15,8 @@
       </v-select>
     </template>
     <template v-slot:actions>
-    <CustomLoader :loading="loading">
         <v-btn color="blue darken-1" text @click="closeDialog()">Cancel</v-btn>
         <v-btn color="success" class="text--white" @click="addMembers()">Add</v-btn>
-    </CustomLoader>
   </template>
   </FormDialog>
 
@@ -26,14 +24,12 @@
 
 <script>
 import FormDialog from './../../../components/FormDialog.vue';
-import CustomLoader from './../../../components/CustomLoader.vue';
 import { useMemberStore } from '@/store/MembersStore';
 import { mapActions, mapState } from 'pinia';
 
 export default {
   components: {
     FormDialog,
-    CustomLoader,
   },
   props: {
     showCondition: Boolean
@@ -42,7 +38,7 @@ export default {
     this.fetchAllMembers()
   },
   computed: {
-    ...mapState(useMemberStore, ['allMembers', 'loading', 'hasError', 'error'])
+    ...mapState(useMemberStore, ['allMembers'])
   },
   watch: {
     showCondition: {
@@ -51,16 +47,6 @@ export default {
         this.show = this.showCondition
       }
     },
-    hasError: {
-            immediate: true,
-            handler(newValue) {
-                this.$nextTick(() => {
-                    if(newValue){
-                        this.$root.VToast.showErrorMessage(this.error);         
-                    }
-                })
-            }
-        }
   },
   data() {
     return {
@@ -82,9 +68,6 @@ export default {
         this.addMembersToGroup(groupId,this.selectedUsers);
         //close dialog
         this.closeDialog();
-        if(!this.hasError){
-          this.$root.VToast.showSuccessMessage('members added');
-        }
         this.selectedUsers=[];
       }
 

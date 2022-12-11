@@ -35,13 +35,13 @@ export default {
       this.message = message || 'missing "message".';
       this.color = "error";
       this.timer = 2500;
-      this.icon = "alert-circle-outline";
+      this.icon = "mdi-alert-circle-outline";
       this.showSnackbar = true;
     },
     showMessage(state) {
       this.message = state.message;
       this.color = state.error ? "error" : "success";
-      this.icon = state.error ? "alert-circle-outline" : "mdi-check";
+      this.icon = state.error ? "mdi-alert-circle-outline" : "mdi-check";
       this.timer = 2500;
       this.showSnackbar = true;
       state.clearMessage();

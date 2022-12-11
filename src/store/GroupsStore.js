@@ -9,17 +9,9 @@ const fileRepository = Repository.get("files");
 
 export const useGroupStore = defineStore("groupStore", {
   state: () => ({
-    ownedGroups: [],
-    ownedGroupsLoading: true,
-    ownedGroupsHasError: false,
-    ownedGroupsError: "",
-
+    ownedGroups: new BaseState(),
     joinedGroups: new BaseState(),
-
-    group: {},
-    groupLoading: true,
-    groupHasError: false,
-    groupError: "",
+    group: new BaseState(),
   }),
   getters: {},
   actions: {
@@ -63,6 +55,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     fetchOwnedGroups() {
+      this.ownedGroups.loading=true;
       groupRepository
         .getOwnedGroups()
         .then((response) => {
@@ -70,56 +63,71 @@ export const useGroupStore = defineStore("groupStore", {
           response.data.map((group) => {
             groups.push(new Group(group));
           });
-          this.ownedGroups = groups;
-          this.ownedGroupsLoading = false;
+          this.ownedGroups.data = groups;
+          this.ownedGroups.loading = false;
         })
-        .catch((err) => {
-          this.ownedGroupsHasError = true;
-          this.ownedGroupsError = err.response.data.message;
+        .catch((error) => {
+          this.ownedGroups.loading = false;
+          this.ownedGroups.error = true;
+          this.ownedGroups.message =
+            error.response.data.message || "Something went wrong";
         });
     },
     deleteOwnedGroup(id) {
+      this.ownedGroups.loading=true;
       groupRepository
         .deleteOwnedGroup(id)
         .then(() => {
-          this.ownedGroups.splice(
-            this.ownedGroups.findIndex((group) => group.id === id),
+          this.ownedGroups.data.splice(
+          this.ownedGroups.data.findIndex((group) => group.id === id),
             1
           );
+          this.ownedGroups.loading = false;
+          this.ownedGroups.message="group deleted successfully :)"
         })
-        .catch((err) => {
-          this.ownedGroupsHasError = true;
-          this.ownedGroupsError = err.response.data.message;
+        .catch((error) => {
+          this.ownedGroups.loading = false;
+          this.ownedGroups.error = true;
+          this.ownedGroups.message =
+            error.response.data.message || "Something went wrong";
         });
     },
     createNewGroup(data) {
+      this.ownedGroups.loading=true;
       groupRepository
         .createNewGroup(data)
         .then((response) => {
-          this.ownedGroups.push(
+          this.ownedGroups.data.push(
             new Group({ id: response.data.data.id, name: data.name })
           );
+          this.ownedGroups.loading = false;
+          this.ownedGroups.message="group created successfully :)"
         })
-        .catch((err) => {
-          this.ownedGroupsHasError = true;
-          this.ownedGroupsError = err.response.data.message;
+        .catch((error) => {
+          this.ownedGroups.loading = false;
+          this.ownedGroups.error = true;
+          this.ownedGroups.message =
+            error.response.data.message || "Something went wrong";
         });
     },
     fetchGroup(id) {
+      this.group.loading=true;
       groupRepository
         .getGroup(id)
         .then((response) => {
           var group = new Group(response.data.data);
-          this.group = group;
-          this.groupLoading = false;
+          this.group.data = group;
+          this.group.loading = false;
         })
-        .catch((err) => {
-          console.log(err);
-          this.groupHasError = true;
-          this.groupError = err.response.data.message;
+        .catch((error) => {
+          this.group.loading = false;
+          this.group.error = true;
+          this.group.message =
+            error.response.data.message || "Something went wrong";
         });
     },
     addFilesToGroup(groupId, filesIds) {
+      this.group.loading=true;
       fileRepository
         .addFilesToGroup(groupId, filesIds)
         .then((response) => {
@@ -127,27 +135,34 @@ export const useGroupStore = defineStore("groupStore", {
           response.data.data.map((file) => {
             files.push(new File(file));
           });
-          this.group.files = files;
+          this.group.data.files = files;
+          this.group.loading = false;
+          this.group.message="files added successfully :)"
         })
-        .catch((err) => {
-          this.groupHasError = true;
-          this.groupError = err.response.data.message;
+        .catch((error) => {
+          this.group.loading = false;
+          this.group.error = true;
+          this.group.message =
+            error.response.data.message || "Something went wrong";
         });
     },
     removeFileFromGroup(groupId, fileId) {
-      this.groupLoading = true;
+      this.group.loading=true;
       fileRepository
         .removeFileFromGroup(groupId, fileId)
         .then(() => {
-          this.group.files.splice(
-            this.group.files.findIndex((file) => file.id === fileId),
+          this.group.data.files.splice(
+            this.group.data.files.findIndex((file) => file.id === fileId),
             1
           );
-          this.groupLoading = false;
+          this.group.loading = false;
+          this.group.message="file removed"
         })
-        .catch((err) => {
-          this.groupHasError = true;
-          this.groupError = err.response.data.message;
+        .catch((error) => {
+          this.group.loading = false;
+          this.group.error = true;
+          this.group.message =
+            error.response.data.message || "Something went wrong";
         });
     },
   },

@@ -1,16 +1,17 @@
 <template>
-  <div class="grey lighten-5">
+  <div>
     <v-container>
       <v-col>
-        <v-breadcrumbs :items="links">
-          <template v-slot:divider>
-            <v-icon>mdi-chevron-right</v-icon>
-          </template>
-        </v-breadcrumbs>
-        <div class="text-h3 pb-2" style="color: #424242;">
-          Group : {{ group.name }}
-        </div>
-        <v-row class="pb-2" no-gutters>
+        <CustomLoader :loading="group.loading">
+          <v-breadcrumbs :items="links">
+            <template v-slot:divider>
+              <v-icon>mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+          <div class="text-h3 text-left pb-2" style="color: #424242;">
+            Group : {{ group.data.name }}
+          </div>
+          <v-row class="pb-2" no-gutters>
           <div class="text-h6 pl-5" style="color: #757575">
             Group members
           </div>
@@ -26,6 +27,7 @@
           <CreateButton entityName="file" @click.native="toggleAddFilesDialog()"></CreateButton>
         </v-row>
         <GroupFilesTable></GroupFilesTable>
+        </CustomLoader>
       </v-col>
     </v-container>
     <AddMembersDialog :showCondition="addMembersDialog" @closed="toggleAddMembersDialog()"></AddMembersDialog>
@@ -39,18 +41,20 @@ import MembersTable from './components/MembersTable.vue';
 import GroupFilesTable from './components/GroupFilesTable.vue';
 import AddMembersDialog from './components/AddMembersDialog.vue';
 import AddFilesDialog from './components/AddFilesDialog.vue';
+import CustomLoader from '@/components/CustomLoader.vue';
 import { useGroupStore } from '@/store/GroupsStore';
 import { mapActions, mapState } from 'pinia';
 
 export default {
   components: {
-    CreateButton,                                                                           
+    CreateButton,
     MembersTable,
     GroupFilesTable,
-    AddMembersDialog, 
+    AddMembersDialog,
     AddFilesDialog,
+    CustomLoader
   },
-  mounted(){
+  mounted() {
     this.fetchGroup(this.$route.params.id);
   },
   data: () => ({
@@ -58,7 +62,7 @@ export default {
     addFilesDialog: false,
   }),
   computed: {
-    ...mapState(useGroupStore,['group','groupHasError','groupError']),
+    ...mapState(useGroupStore, ['group']),
     links() {
       return [
         {
@@ -72,7 +76,7 @@ export default {
           href: '/my-groups',
         },
         {
-          text: `${this.group.name}`,
+          text: `${this.group.data.name}`,
           disabled: true,
           href: '#',
         },
@@ -80,18 +84,18 @@ export default {
     },
   },
   watch: {
-    groupHasError: {
-            immediate: true,
-            deep: true,
-            handler(newValue) {
-                this.$nextTick(() => {
-                    if(newValue){
-                        this.$root.VToast.showErrorMessage(this.groupError);         
-                    }
-                })
-            }
-        }
-    },
+    group: {
+      immediate: true,
+      deep: true,
+      handler(newValue) {
+        this.$nextTick(() => {
+          if (newValue.message != '') {
+            this.$root.VToast.showMessage(newValue);
+          }
+        })
+      }
+    }
+  },
   methods: {
     toggleAddMembersDialog() {
       this.addMembersDialog = !this.addMembersDialog;
@@ -99,7 +103,7 @@ export default {
     toggleAddFilesDialog() {
       this.addFilesDialog = !this.addFilesDialog;
     },
-    ...mapActions(useGroupStore,['fetchGroup']),
+    ...mapActions(useGroupStore, ['fetchGroup']),
   }
 }
 </script>

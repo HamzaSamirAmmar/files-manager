@@ -4,7 +4,7 @@ export class BaseState {
   loading;
   data;
   constructor() {
-    this.data = null;
+    this.data = [];
     this.message = "";
     this.error = false;
     this.loading = false;
@@ -12,6 +12,7 @@ export class BaseState {
 
   // TODO: remove this method
   clearMessage() {
+    this.error=false;//added this because a success message after a previous error becomes red
     this.message = "";
   }
 }

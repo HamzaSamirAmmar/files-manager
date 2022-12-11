@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DataTable :items="ownedGroups" :headers="headers" :loading="ownedGroupsLoading">
+        <DataTable :items="ownedGroups.data" :headers="headers" :loading="ownedGroups.loading">
             <template v-slot:actions="slotProps">
                 <v-icon small class="mr-2" @click="showItem(slotProps.item)">
                     mdi-eye
@@ -34,19 +34,19 @@ export default {
         DeleteDialog
     },
     computed:{
-        ...mapState(useGroupStore, ['ownedGroups','ownedGroupsLoading','ownedGroupsHasError','ownedGroupsError'])
+        ...mapState(useGroupStore, ['ownedGroups'])
     },
     mounted(){
         this.fetchOwnedGroups();
     },
     watch: {
-        ownedGroupsHasError: {
+        ownedGroups: {
             immediate: true,
             deep: true,
             handler(newValue) {
                 this.$nextTick(() => {
-                    if(newValue){
-                        this.$root.VToast.showErrorMessage(this.ownedGroupsError);         
+                    if(newValue.message!=''){
+                        this.$root.VToast.showMessage(newValue);         
                     }
                 })
             }
