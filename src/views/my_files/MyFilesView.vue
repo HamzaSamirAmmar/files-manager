@@ -18,16 +18,19 @@
         <MyFilesTable />
       </v-col>
     </v-container>
+    <CreateFileDialog :showCondition="showDialog" @closed="closeCreateDialog()"></CreateFileDialog>
   </div>
 </template>
 
 <script>
 import CreateButton from "./../../components/buttons/CreateButton.vue";
+import CreateFileDialog from "./components/CreateFileDialog.vue";
 import MyFilesTable from "./components/MyFilesTable.vue";
 
 export default {
   components: {
     CreateButton,
+    CreateFileDialog,
     MyFilesTable,
   },
   data: () => ({

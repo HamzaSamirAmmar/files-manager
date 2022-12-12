@@ -20,7 +20,7 @@
           >
             mdi-history
           </v-icon>
-          <v-icon small class="mr-2" @click="checkIn(slotProps.item.id)">
+          <v-icon small class="mr-2" @click="checkIn(slotProps.item.id,group.id)">
             mdi-file-check-outline
           </v-icon>
           <!--TODO: handle click on view file-->

@@ -62,7 +62,6 @@
 
 <script>
 export default {
-  /// TODO ass the validation bool value to the parent
   data: () => ({
     email: "",
     password: "",
