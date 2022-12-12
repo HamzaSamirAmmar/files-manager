@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DataTable :items="fileLogs" :headers="headers" :loading="loading" ref="myTable">
+        <DataTable :items="fileLogs.data" :headers="headers" :loading="fileLogs.loading" ref="myTable">
         </DataTable>
         <v-btn small color="primary" class="mt-3" @click="exportTablePDF()">
             export to pdf
@@ -24,16 +24,16 @@ export default {
         this.fetchFileLogs(this.$route.params.id);
     },
     computed:{
-       ...mapState(useFileLogStore,['fileLogs','loading','hasError','error']), 
+       ...mapState(useFileLogStore,['fileLogs']), 
     },
     watch: {
-        hasError: {
+        fileLogs: {
             immediate: true,
             deep: true,
             handler(newValue) {
                 this.$nextTick(() => {
-                    if(newValue){
-                        this.$root.VToast.showErrorMessage(this.error);         
+                    if(newValue.message!=''){
+                        this.$root.VToast.showMessage(newValue);         
                     }
                 })
             }

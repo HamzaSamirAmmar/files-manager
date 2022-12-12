@@ -1,21 +1,20 @@
 import { defineStore } from "pinia";
 import Repository from "@/repositories/RepositoryFactory";
 import { File } from "@/models/FileModel";
+import { BaseState } from "./BaseState";
 
 const fileRepository = Repository.get("files");
 
 export const useFileStore = defineStore("fileStore", {
   state: () => ({
-    ownedFiles: [],
-    ownedFilesLoading: true,
-    ownedFilesHasError: false,
-    ownedFilesError: "",
-    reservedFiles: [],
-    file: {},
+    ownedFiles: new BaseState(),
+    reservedFiles: new BaseState(),
+    file:new BaseState(),
   }),
   getters: {},
   actions: {
     fetchMyFiles() {
+      this.ownedFiles.loading=true;
       fileRepository
         .getOwnedFiles()
         .then((response) => {
@@ -23,27 +22,31 @@ export const useFileStore = defineStore("fileStore", {
           response.data.data.map((file) => {
             files.push(new File(file));
           });
-          this.ownedFiles = files;
-          this.ownedFilesLoading = false;
+          this.ownedFiles.data = files;
+          this.ownedFiles.loading = false;
         })
         .catch((err) => {
-          this.ownedFilesHasError = true;
-          this.ownedFilesError = err.response.data.message;
-          console.log(err);
+          this.ownedFiles.loading = false;
+          this.ownedFiles.error=true;
+          this.ownedFiles.message=err.response.data.message;
         });
     },
     fetchFile(id) {
+      this.file.loading=true;
       fileRepository
         .getFileById(id)
         .then((response) => {
-          this.file = new File(response.data.data);
+          this.file.data = new File(response.data.data);
+          this.file.loading=false;
         })
         .catch((err) => {
-          console.log(err);
+          this.file.loading=false;
+          this.file.error=true;
+          this.file.message=err.response.data.message;
         });
     },
     deleteOwnedFile(id) {
-      this.ownedFilesLoading = true;
+      this.ownedFilesLoading = true;//FIXME now it's using baseState
       fileRepository
         .deleteOwnedFile(id)
         .then((response) => {

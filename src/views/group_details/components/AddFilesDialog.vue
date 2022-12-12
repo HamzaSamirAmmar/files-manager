@@ -77,7 +77,6 @@ export default {
       if(this.selectedFiles.length!=0){
         var groupId=this.$route.params.id;
         this.addFilesToGroup(groupId,this.selectedFiles);
-        this.$root.VToast.showSuccessMessage('files added');
         //close dialog
         this.closeDialog();
         this.selectedFiles=[];

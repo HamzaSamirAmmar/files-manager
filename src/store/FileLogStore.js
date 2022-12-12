@@ -1,33 +1,32 @@
 import { defineStore } from "pinia";
 import Repository from "@/repositories/RepositoryFactory";
 import { FileLog } from "@/models/FileLogModel";
+import { BaseState } from "./BaseState";
 const fileRepository = Repository.get("filelogs");
 
 
 export const useFileLogStore = defineStore("filesLogtore", {
     state: ()=>({
-        fileLogs:[],
-        loading:true,
-        hasError:false,
-        error:'',
+        fileLogs:new BaseState(),
     }),
     getters:{
 
     },
     actions:{
         fetchFileLogs(id){
+            this.fileLogs.loading=true;
             fileRepository.getLogsOfFile(id)
             .then((response) => {
                 var logs = new Array();
                 response.data.data.map((log) => {
                     logs.push(new FileLog(log))
                 });
-                this.fileLogs = logs;
-                this.loading = false;
+                this.fileLogs.data = logs;
+                this.fileLogs.loading = false;
             })
-            .catch((err) => {
-                this.hasError= true;
-                this.error = err.response.data.message;
+            .catch((error) => {
+                this.fileLogs.error= true;
+                this.fileLogs.message = error.response.data.message;
             });
         }
     }

@@ -110,7 +110,6 @@ export default {
           fileIds: this.selectedFiles,
         };
         this.createNewGroup(data);
-        this.$root.VToast.showSuccessMessage('group created');
         //call this.closeDialog
         this.closeDialog();
       }
