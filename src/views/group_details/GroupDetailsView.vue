@@ -11,22 +11,24 @@
           <div class="text-h3 text-left pb-2" style="color: #424242;">
             Group : {{ group.data.name }}
           </div>
+          <template v-if="group.data.name != 'public'">
+            <v-row class="pb-2" no-gutters>
+              <div class="text-h6 pl-5" style="color: #757575">
+                Group members
+              </div>
+              <v-spacer></v-spacer>
+              <CreateButton entityName="member" @click.native="toggleAddMembersDialog()"></CreateButton>
+            </v-row>
+            <MembersTable class="ml-5 pb-2"></MembersTable>
+          </template>
           <v-row class="pb-2" no-gutters>
-          <div class="text-h6 pl-5" style="color: #757575">
-            Group members
-          </div>
-          <v-spacer></v-spacer>
-          <CreateButton entityName="member" @click.native="toggleAddMembersDialog()"></CreateButton>
-        </v-row>
-        <MembersTable class="ml-5 pb-2"></MembersTable>
-        <v-row class="pb-2" no-gutters>
-          <div class="text-h6 pl-5" style="color: #757575">
-            Group files
-          </div>
-          <v-spacer></v-spacer>
-          <CreateButton entityName="file" @click.native="toggleAddFilesDialog()"></CreateButton>
-        </v-row>
-        <GroupFilesTable></GroupFilesTable>
+            <div class="text-h6 pl-5" style="color: #757575">
+              Group files
+            </div>
+            <v-spacer></v-spacer>
+            <CreateButton entityName="file" @click.native="toggleAddFilesDialog()"></CreateButton>
+          </v-row>
+          <GroupFilesTable></GroupFilesTable>
         </CustomLoader>
       </v-col>
     </v-container>
