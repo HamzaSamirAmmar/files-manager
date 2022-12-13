@@ -2,8 +2,8 @@
   <div>
     <FilesTable
       class="ml-5 pb-2"
-      :files="ownedFiles"
-      :loading="ownedFilesLoading"
+      :files="ownedFiles.data"
+      :loading="ownedFiles.loading"
     >
       <template v-slot:actions="slotProps">
         <v-icon
@@ -46,12 +46,7 @@ export default {
     DeleteDialog,
   },
   computed: {
-    ...mapState(useFileStore, [
-      "ownedFiles",
-      "ownedFilesLoading",
-      "ownedFilesHasError",
-      "ownedFilesError",
-    ]),
+    ...mapState(useFileStore, ["ownedFiles"]),
   },
   mounted() {
     this.fetchMyFiles();
@@ -76,18 +71,17 @@ export default {
     },
   },
   watch: {
-    // TODO: change owned files to base state type
-    // ownedFiles: {
-    //   immediate: true,
-    //   deep: true,
-    //   handler(newValue) {
-    //     this.$nextTick(() => {
-    //       if (newValue) {
-    //         this.$root.VToast.showErrorMessage(this.ownedGroupsError);
-    //       }
-    //     });
-    //   },
-    // },
+    ownedFiles: {
+      immediate: true,
+      deep: true,
+      handler(newValue) {
+        this.$nextTick(() => {
+          if (newValue.message != "") {
+            this.$root.VToast.showMessage(newValue);
+          }
+        });
+      },
+    },
   },
   data: () => ({
     dialogDelete: false,

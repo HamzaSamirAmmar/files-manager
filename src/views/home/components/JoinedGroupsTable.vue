@@ -1,5 +1,18 @@
 <template>
-  <div style="position: relative">
+  <div>
+    <v-row>
+      <v-spacer></v-spacer>
+      <v-btn
+        color="primary"
+        class="mt-10"
+        small
+        @click = "postBulkCheckIn"
+        v-show="showBulkCheckInButton()"
+      >
+        Bulk Check In
+        <v-icon> mdi-file-lock</v-icon>
+      </v-btn>
+    </v-row>
     <v-col v-for="group in joinedGroups.data" :key="group.id">
       <v-row class="my-5">
         <v-icon large color="primary"> mdi-account-multiple </v-icon>
@@ -11,6 +24,9 @@
         class="ml-5 pb-2"
         :files="group.files"
         :loading="checkIn.loading"
+        :selectable="true"
+        @item-selected="itemSelected"
+        @toggle-select-all="toggleSelectAll"
       >
         <template v-slot:actions="slotProps">
           <v-icon
@@ -20,8 +36,12 @@
           >
             mdi-history
           </v-icon>
-          <v-icon small class="mr-2" @click="checkIn(slotProps.item.id,group.id)">
-            mdi-file-check-outline
+          <v-icon
+            small
+            class="mr-2"
+            @click="checkIn(slotProps.item.id, group.id)"
+          >
+          mdi-file-lock
           </v-icon>
           <!--TODO: handle click on view file-->
           <v-icon small> mdi-eye </v-icon>
@@ -40,14 +60,44 @@ export default {
   components: {
     FilesTable,
   },
-  data: () => ({}),
+  data: () => ({
+    selected: [],
+  }),
   computed: {
     ...mapState(useGroupStore, ["joinedGroups"]),
   },
   methods: {
-    ...mapActions(useGroupStore, ["checkIn"]),
+    ...mapActions(useGroupStore, ["checkIn","bulkCheckIn"]),
+    showBulkCheckInButton: function () {
+      return this.selected.length > 0;
+    },
+    postBulkCheckIn: function(){
+      this.bulkCheckIn(this.selected);
+    },
     pushFileHistoryPage: function (id) {
       this.$router.push({ name: "file-history", params: { id: id } });
+    },
+    itemSelected(item) {
+      if (item.value) {
+        if (this.selected.indexOf(item.item.id) === -1) {
+          this.selected.push(item.item.id);
+        }
+      } else {
+        this.selected.splice(this.selected.indexOf(item.item.id), 1);
+      }
+    },
+    toggleSelectAll(item) {
+      if (item.value) {
+        item.items.map((selected) => {
+          if (this.selected.indexOf(selected.id) === -1) {
+            this.selected.push(selected.id);
+          }
+        });
+      } else {
+        item.items.map((unSelected) => {
+          this.selected.splice(this.selected.indexOf(unSelected.id), 1);
+        });
+      }
     },
   },
   watch: {

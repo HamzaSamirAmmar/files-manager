@@ -35,6 +35,20 @@ export const useGroupStore = defineStore("groupStore", {
           this.joinedGroups.message = err.response.data.message;
         });
     },
+    bulkCheckIn(ids) {
+      this.joinedGroups.loading = true;
+      fileRepository
+        .bulkCheckIn(ids)
+        .then(() => {
+          this.joinedGroups.loading = false;
+          this.joinedGroups.message = "Files checked successfully :)";
+        })
+        .catch((err) => {
+          this.joinedGroups.loading = false;
+          this.joinedGroups.error = true;
+          this.joinedGroups.message = err.response.data.message;
+        });
+    },
     fetchJoinedGroups() {
       this.joinedGroups.loading = true;
       groupRepository

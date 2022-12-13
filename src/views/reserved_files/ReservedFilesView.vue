@@ -7,15 +7,20 @@
             <v-icon>mdi-chevron-right</v-icon>
           </template>
         </v-breadcrumbs>
-        <div class="text-h3" style="color: #424242">Reserved Files</div>
+        <div class="text-h3 mb-10" style="color: #424242">Reserved Files</div>
+        <ReservedFilesTable />
       </v-col>
     </v-container>
   </div>
 </template>
 
 <script>
+import ReservedFilesTable from "./components/ReservedFilesTable.vue";
+
 export default {
-  components: {},
+  components: {
+    ReservedFilesTable,
+  },
   data: () => ({
     links: [
       {

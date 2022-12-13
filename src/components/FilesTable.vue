@@ -5,6 +5,8 @@
       :headers="headers"
       :loading="loading"
       :selectable="selectable"
+      @item-selected="itemSelected"
+      @toggle-select-all="toggleSelectAll"
     >
       <template v-slot:actions="slotProps">
         <slot name="actions" :item="slotProps.item"></slot>
@@ -40,5 +42,13 @@ export default {
       { text: "Actions", sortable: false, value: "actions" },
     ],
   }),
+  methods: {
+    itemSelected(item) {
+      this.$emit('item-selected',item);
+    },
+    toggleSelectAll(item) {
+      this.$emit('toggle-select-all',item);
+    },
+  },
 };
 </script>

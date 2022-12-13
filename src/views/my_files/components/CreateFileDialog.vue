@@ -2,7 +2,7 @@
   <FormDialog :showCondition="show" @closed="closeDialog()">
     <template v-slot:title> Add a new file </template>
     <template v-slot:body>
-      <v-form ref="uploadFileForm">
+      <v-form ref="fileForm">
         <v-file-input
           v-model="file"
           outlined
@@ -10,14 +10,14 @@
           show-size
           placeholder="File"
           label="Upload your file"
-          :rules="[(v) => !!v || 'File is required']"
+          :rules="fileRules"
         >
         </v-file-input>
       </v-form>
     </template>
     <template v-slot:actions>
       <v-btn color="blue darken-1" text @click="closeDialog()">Cancel</v-btn>
-      <v-btn color="success" class="text--white" @click="uploadFile()"
+      <v-btn color="success" class="text--white" @click="upload()"
         >Upload</v-btn
       >
     </template>
@@ -26,8 +26,8 @@
 
 <script>
 import FormDialog from "./../../../components/FormDialog.vue";
-// import { useFileStore } from "@/store/FilesStore";
-// import { mapActions, mapState } from "pinia";
+import { useFileStore } from "@/store/FilesStore";
+import { mapActions } from "pinia";
 
 export default {
   components: {
@@ -49,16 +49,23 @@ export default {
     return {
       file: [],
       show: this.showCondition,
+      fileRules: [
+        (v) => !!v || "File is required",
+      ],
     };
   },
   methods: {
+    ...mapActions(useFileStore, ["uploadFile"]),
     closeDialog() {
+      this.$refs.fileForm.reset();
       this.show = false;
       this.$emit("closed");
     },
-    uploadFile() {
-      this.$refs.uploadFileForm.validate();
-      console.log(this.file);
+    upload() {
+      if (this.$refs.fileForm.validate()) {
+        this.uploadFile(this.file.name, this.file);
+        this.closeDialog();
+      }
     },
   },
 };
