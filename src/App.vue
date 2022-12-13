@@ -18,7 +18,7 @@ import VToast from "./components/VToast.vue";
 export default {
   data() {
     return {
-      isAuth:true,// localStorage.getItem("user") !== null,
+      isAuth: localStorage.getItem("user") !== null,
     };
   },
   components: {

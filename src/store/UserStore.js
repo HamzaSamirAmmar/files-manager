@@ -12,7 +12,7 @@ export const useUserStore = defineStore("userStore", {
   }),
   getters: {
     isAuthenticated() {
-      return this.user.accessToken === null;
+      return this.user !== null;
     },
     getUser() {
       return this.user;
