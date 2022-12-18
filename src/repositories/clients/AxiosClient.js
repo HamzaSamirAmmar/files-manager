@@ -1,18 +1,20 @@
 import axios from "axios";
-// import { useUserStore } from "../../store/UserStore";
-// import pinia from "@/store";
+import { useUserStore } from "../../store/UserStore";
+import pinia from "@/store";
 
 const baseDomain = process.env.VUE_APP_API_DOMAIN;
 const baseURL = `${baseDomain}/api`;
 console.log(baseURL);
 
-const userAccessToken = "46|YzhUrWIjFzTALFfoeqS9B9WdnnF1o2sZsR3JIVpH";
+const userStore = useUserStore(pinia);
+
+console.log(userStore.getToken);
 
 const httpClient = axios.create({
   baseURL,
   responseType: "json",
   headers: {
-    Authorization: `Bearer ${userAccessToken}`,
+    Authorization: `Bearer ${userStore.getToken}`,
   },
   timeout: 20000,
 });

@@ -32,6 +32,13 @@ export default {
   deleteOwnedFile(id) {
     return Client.delete(`/files/${id}`);
   },
+  showFileContent(id) {
+    return Client.get(`/files/${id}/content`, {
+      headers: {
+        "content-Type": "application/octet-stream" // or Content-type: "application/vnd.ms-excel"
+      },
+    });
+  },
   uploadFile(name, file) {
     return Client.post(
       `/file`,

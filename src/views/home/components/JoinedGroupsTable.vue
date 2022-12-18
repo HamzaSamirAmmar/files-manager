@@ -6,7 +6,7 @@
         color="primary"
         class="mt-10"
         small
-        @click = "postBulkCheckIn"
+        @click="postBulkCheckIn"
         v-show="showBulkCheckInButton()"
       >
         Bulk Check In
@@ -41,10 +41,11 @@
             class="mr-2"
             @click="checkIn(slotProps.item.id, group.id)"
           >
-          mdi-file-lock
+            mdi-file-lock
           </v-icon>
-          <!--TODO: handle click on view file-->
-          <v-icon small> mdi-eye </v-icon>
+          <v-icon small @click="showFileContent(slotProps.item.id)">
+            mdi-eye
+          </v-icon>
         </template>
       </FilesTable>
     </v-col>
@@ -67,11 +68,11 @@ export default {
     ...mapState(useGroupStore, ["joinedGroups"]),
   },
   methods: {
-    ...mapActions(useGroupStore, ["checkIn","bulkCheckIn"]),
+    ...mapActions(useGroupStore, ["checkIn", "bulkCheckIn","showFileContent"]),
     showBulkCheckInButton: function () {
       return this.selected.length > 0;
     },
-    postBulkCheckIn: function(){
+    postBulkCheckIn: function () {
       this.bulkCheckIn(this.selected);
     },
     pushFileHistoryPage: function (id) {

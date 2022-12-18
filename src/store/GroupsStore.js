@@ -12,9 +12,25 @@ export const useGroupStore = defineStore("groupStore", {
     ownedGroups: new BaseState(),
     joinedGroups: new BaseState(),
     group: new BaseState(),
+    file: new BaseState(),
   }),
   getters: {},
   actions: {
+    showFileContent(id) {
+      this.file.loading = true;
+      fileRepository
+        .showFileContent(id)
+        .then((response) => {
+          console.log(response);
+          console.log(response.data);
+          this.file.loading = false;
+        })
+        .catch((err) => {
+          this.file.loading = false;
+          this.file.error = true;
+          this.file.message = err.response.data.message;
+        });
+    },
     checkIn(id, groupId) {
       this.joinedGroups.loading = true;
       fileRepository
@@ -23,7 +39,7 @@ export const useGroupStore = defineStore("groupStore", {
           console.log(response);
           this.joinedGroups.loading = false;
           this.joinedGroups.message = "File checked successfully :)";
-          // TODO change reserver name in the files table (get name of current user) 
+          // TODO change reserver name in the files table (get name of current user)
           // use group id to find the group and id to find the file
           console.log(groupId);
         })
@@ -69,7 +85,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     fetchOwnedGroups() {
-      this.ownedGroups.loading=true;
+      this.ownedGroups.loading = true;
       groupRepository
         .getOwnedGroups()
         .then((response) => {
@@ -88,16 +104,16 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     deleteOwnedGroup(id) {
-      this.ownedGroups.loading=true;
+      this.ownedGroups.loading = true;
       groupRepository
         .deleteOwnedGroup(id)
         .then(() => {
           this.ownedGroups.data.splice(
-          this.ownedGroups.data.findIndex((group) => group.id === id),
+            this.ownedGroups.data.findIndex((group) => group.id === id),
             1
           );
           this.ownedGroups.loading = false;
-          this.ownedGroups.message="group deleted successfully :)"
+          this.ownedGroups.message = "group deleted successfully :)";
         })
         .catch((error) => {
           this.ownedGroups.loading = false;
@@ -107,7 +123,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     createNewGroup(data) {
-      this.ownedGroups.loading=true;
+      this.ownedGroups.loading = true;
       groupRepository
         .createNewGroup(data)
         .then((response) => {
@@ -115,7 +131,7 @@ export const useGroupStore = defineStore("groupStore", {
             new Group({ id: response.data.data.id, name: data.name })
           );
           this.ownedGroups.loading = false;
-          this.ownedGroups.message="group created successfully :)"
+          this.ownedGroups.message = "group created successfully :)";
         })
         .catch((error) => {
           this.ownedGroups.loading = false;
@@ -125,7 +141,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     fetchGroup(id) {
-      this.group.loading=true;
+      this.group.loading = true;
       groupRepository
         .getGroup(id)
         .then((response) => {
@@ -141,7 +157,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     addFilesToGroup(groupId, filesIds) {
-      this.group.loading=true;
+      this.group.loading = true;
       fileRepository
         .addFilesToGroup(groupId, filesIds)
         .then((response) => {
@@ -151,7 +167,7 @@ export const useGroupStore = defineStore("groupStore", {
           });
           this.group.data.files = files;
           this.group.loading = false;
-          this.group.message="files added successfully :)"
+          this.group.message = "files added successfully :)";
         })
         .catch((error) => {
           this.group.loading = false;
@@ -161,7 +177,7 @@ export const useGroupStore = defineStore("groupStore", {
         });
     },
     removeFileFromGroup(groupId, fileId) {
-      this.group.loading=true;
+      this.group.loading = true;
       fileRepository
         .removeFileFromGroup(groupId, fileId)
         .then(() => {
@@ -170,7 +186,7 @@ export const useGroupStore = defineStore("groupStore", {
             1
           );
           this.group.loading = false;
-          this.group.message="file removed"
+          this.group.message = "file removed";
         })
         .catch((error) => {
           this.group.loading = false;

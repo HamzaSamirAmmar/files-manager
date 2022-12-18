@@ -1,13 +1,14 @@
 import { User } from "@/models/UserModel";
 import { defineStore } from "pinia";
-import Repository from "../repositories/RepositoryFactory";
+import authRepository from "../repositories/AuthRepository";
 import router from "../router/index";
-
-const authRepository = Repository.get("auth");
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
-    user: localStorage.getItem("user") || null,
+    user:
+      localStorage.getItem("user") === null
+        ? null
+        : JSON.parse(localStorage.getItem("user")),
     loading: false,
   }),
   getters: {
@@ -21,7 +22,7 @@ export const useUserStore = defineStore("userStore", {
       return this.user.id;
     },
     getToken() {
-      return this.user.accessToken;
+      return this.user.token;
     },
   },
   actions: {
@@ -33,7 +34,7 @@ export const useUserStore = defineStore("userStore", {
         .then((response) => {
           this.loading = false;
           this.user = new User(response.data);
-          localStorage.setItem("user", this.user);
+          localStorage.setItem("user", JSON.stringify(response.data.data));
           router.push("/");
         })
         .catch((err) => {
@@ -48,7 +49,7 @@ export const useUserStore = defineStore("userStore", {
         .then((response) => {
           this.loading = false;
           this.user = new User(response.data);
-          localStorage.setItem("user", this.user);
+          localStorage.setItem("user", JSON.stringify(response.data.data));
           router.push("/");
         })
         .catch((err) => {

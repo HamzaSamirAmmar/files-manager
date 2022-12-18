@@ -27,7 +27,7 @@
         </v-select>
         <v-select
           v-model="selectedFiles"
-          :items="myFiles"
+          :items="myFiles.data"
           label="Select files"
           multiple
           chips
