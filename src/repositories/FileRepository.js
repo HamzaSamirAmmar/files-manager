@@ -4,7 +4,7 @@ import Client from "./clients/AxiosClient";
 export default {
   bulkCheckIn(ids) {
     console.log(ids);
-    return Client.get(`/files/bulk-check-in`, {
+    return Client.post(`/files/bulk-check-in?_method=PUT`, {
       ids: ids,
     });
   },
@@ -35,13 +35,14 @@ export default {
   },
   showFileContent(id) {
     return Client.get(
-      `/files/${id}/content`
-      // {
-      //   headers:{
-      //     'Access-Control-Allow-Origin': '*',
-      //     "secure": false
-      //   }
-      // }
+      `/files/${id}/content`,
+      {
+        responseType:'blob',
+        // headers:{
+        //   // 'Access-Control-Allow-Origin': '*',
+        //   // "secure": false
+        // }
+      }
     );
   },
   uploadFile(name, file) {
@@ -59,8 +60,8 @@ export default {
     );
   },
   editFile(id, name, file) {
-    return Client.put(
-      `/files/${id}/edit-file`,
+    return Client.post(
+      `/files/${id}/edit-file?_method=PUT`,
       {
         name: name,
         file: file,
