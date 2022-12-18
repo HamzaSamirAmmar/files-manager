@@ -31,6 +31,22 @@ export const useFileStore = defineStore("fileStore", {
           this.reservedFiles.message = err.response.data.message;
         });
     },
+    editFile(id, name, file) {
+      this.reservedFiles.loading = true;
+      fileRepository
+        .editFile(id, name, file)
+        .then((response) => {
+          console.log(response);
+          this.reservedFiles.loading = false;
+          this.reservedFiles.message = "File updated successfully :)";
+          this.fetchReservedFiles();
+        })
+        .catch((err) => {
+          this.reservedFiles.loading = false;
+          this.reservedFiles.error = true;
+          this.reservedFiles.message = err.response.data.message;
+        });
+    },
     uploadFile(name, file) {
       this.ownedFiles.loading = true;
       fileRepository
@@ -38,7 +54,7 @@ export const useFileStore = defineStore("fileStore", {
         .then((response) => {
           console.log(response);
           this.ownedFiles.loading = false;
-          this.ownedFiles.message = "File uploaded successfully";
+          this.ownedFiles.message = "File uploaded successfully :)";
           this.fetchMyFiles();
         })
         .catch((err) => {

@@ -13,7 +13,7 @@
       </v-list-item-avatar>
 
       <!--  TODO: get the name from state management (useUserStore) after login -->
-      <v-list-item-title>User Name</v-list-item-title>
+      <v-list-item-title>{{username}}</v-list-item-title>
 
       <v-btn icon @click.stop="mini = !mini">
         <v-icon>mdi-chevron-left</v-icon>
@@ -41,7 +41,18 @@
 </template>
 
 <script>
+// import { useUserStore } from "../store/UserStore";
+// import pinia from "../store";
+
 export default {
+  computed: {},
+  methods: {},
+  setup() {
+    // initialize the store
+    // const userStore = useUserStore(pinia);
+    // console.log(userStore);
+    // return {userStore}
+  },
   data() {
     return {
       drawer: true,
@@ -60,6 +71,7 @@ export default {
         },
       ],
       mini: true,
+      username: JSON.parse(localStorage.getItem("user")) !== null ?  JSON.parse(localStorage.getItem("user")).name : "username",
     };
   },
 };

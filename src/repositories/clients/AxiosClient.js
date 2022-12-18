@@ -6,25 +6,19 @@ const baseDomain = process.env.VUE_APP_API_DOMAIN;
 const baseURL = `${baseDomain}/api`;
 console.log(baseURL);
 
-const userStore = useUserStore(pinia);
-
-console.log(userStore.getToken);
-
 const httpClient = axios.create({
   baseURL,
   responseType: "json",
-  headers: {
-    Authorization: `Bearer ${userStore.getToken}`,
-  },
+  headers: {},
   timeout: 20000,
 });
 
-// httpClient.interceptors.request.use((config) => {
-//   const userStore = useUserStore(pinia);
-//   config.headers.Authorization = `Bearer ${userStore.getToken}`;
-//   config.headers.Accept = "application/json";
-//   return config;
-// });
+httpClient.interceptors.request.use((config) => {
+  const userStore = useUserStore(pinia);
+  config.headers.Authorization = `Bearer ${userStore.getToken}`;
+  config.headers.Accept = "application/json";
+  return config;
+});
 
 // // Add a response interceptor
 // httpClient.interceptors.response.use(

@@ -12,23 +12,27 @@ export const useGroupStore = defineStore("groupStore", {
     ownedGroups: new BaseState(),
     joinedGroups: new BaseState(),
     group: new BaseState(),
-    file: new BaseState(),
   }),
   getters: {},
   actions: {
     showFileContent(id) {
-      this.file.loading = true;
+      this.joinedGroups.loading = true;
       fileRepository
         .showFileContent(id)
-        .then((response) => {
-          console.log(response);
-          console.log(response.data);
-          this.file.loading = false;
+        .then(() => {
+          this.joinedGroups.loading = false;
         })
         .catch((err) => {
-          this.file.loading = false;
-          this.file.error = true;
-          this.file.message = err.response.data.message;
+          console.log(err);
+          this.joinedGroups.loading = false;
+          this.joinedGroups.error = true;
+          console.log(err);
+          // temporary solution
+          this.joinedGroups.message =
+            err.message !== "Network Error"
+              ? err.response.data.message
+              : "";
+          // ************************** //
         });
     },
     checkIn(id, groupId) {

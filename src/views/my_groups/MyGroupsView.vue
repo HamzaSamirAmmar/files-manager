@@ -12,6 +12,12 @@
             My groups
           </div>
           <v-spacer></v-spacer>
+          <RouterLink to="/group-details/1">
+            <v-chip class="ma-2" color="primary">
+              public group
+            </v-chip>
+          </RouterLink>
+          <v-spacer></v-spacer>
           <CreateButton entityName="group" @click.native="showCreateDialog()"></CreateButton>
         </v-row>
         <GroupsTable></GroupsTable>

@@ -3,8 +3,9 @@ import Client from "./clients/AxiosClient";
 
 export default {
   bulkCheckIn(ids) {
+    console.log(ids);
     return Client.get(`/files/bulk-check-in`, {
-      files: ids,
+      ids: ids,
     });
   },
   getOwnedFiles() {
@@ -33,15 +34,33 @@ export default {
     return Client.delete(`/files/${id}`);
   },
   showFileContent(id) {
-    return Client.get(`/files/${id}/content`, {
-      headers: {
-        "content-Type": "application/octet-stream" // or Content-type: "application/vnd.ms-excel"
-      },
-    });
+    return Client.get(
+      `/files/${id}/content`
+      // {
+      //   headers:{
+      //     'Access-Control-Allow-Origin': '*',
+      //     "secure": false
+      //   }
+      // }
+    );
   },
   uploadFile(name, file) {
     return Client.post(
       `/file`,
+      {
+        name: name,
+        file: file,
+      },
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+  },
+  editFile(id, name, file) {
+    return Client.put(
+      `/files/${id}/edit-file`,
       {
         name: name,
         file: file,

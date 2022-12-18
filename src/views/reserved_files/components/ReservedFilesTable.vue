@@ -16,8 +16,16 @@
         <v-icon small class="mr-2" @click="postCheckOut(slotProps.item.id)">
           mdi-file-lock-open-outline
         </v-icon>
+        <v-icon small @click="showEditDialog(slotProps.item.id)">
+          mdi-file-upload-outline
+        </v-icon>
       </template>
     </FilesTable>
+    <EditFileDialog
+      :showCondition="showDialog"
+      :fileId = "fileId"
+      @closed="closeEditDialog()"
+    ></EditFileDialog>
   </div>
 </template>
 
@@ -25,10 +33,12 @@
 import FilesTable from "../../../components/FilesTable.vue";
 import { useFileStore } from "@/store/FilesStore";
 import { mapActions, mapState } from "pinia";
+import EditFileDialog from "./EditFileDialog.vue";
 
 export default {
   components: {
     FilesTable,
+    EditFileDialog,
   },
   computed: {
     ...mapState(useFileStore, ["reservedFiles"]),
@@ -45,6 +55,13 @@ export default {
     postCheckOut(id) {
       this.checkOut(id);
     },
+    showEditDialog(id) {
+      this.fileId = id;
+      this.showDialog = true;
+    },
+    closeEditDialog() {
+      this.showDialog = false;
+    },
   },
   watch: {
     reservedFiles: {
@@ -59,6 +76,6 @@ export default {
       },
     },
   },
-  data: () => ({}),
+  data: () => ({ showDialog: false, fileId: -1 }),
 };
 </script>

@@ -16,13 +16,13 @@ export const useUserStore = defineStore("userStore", {
       return this.user !== null;
     },
     getUser() {
-      return this.user;
+      return this.user !== null ? this.user : null;
     },
     getId() {
-      return this.user.id;
+      return this.user !== null ? this.user.id : null;
     },
     getToken() {
-      return this.user.token;
+      return this.user !== null ? this.user.token : null;
     },
   },
   actions: {

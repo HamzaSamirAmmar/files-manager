@@ -14,12 +14,21 @@
 <script>
 import CustomDrawer from "./components/CustomDrawer.vue";
 import VToast from "./components/VToast.vue";
+// import {useUserStore} from "./store/UserStore";
+// import pinia from "./store";
+
+
 
 export default {
   data() {
     return {
       isAuth: localStorage.getItem("user") !== null,
     };
+  },
+  setup() {
+    // initialize the store
+    // const userStore = useUserStore(pinia);
+    // return {userStore}
   },
   components: {
     CustomDrawer,

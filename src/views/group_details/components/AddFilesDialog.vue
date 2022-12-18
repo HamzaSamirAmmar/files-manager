@@ -6,7 +6,7 @@
     <template v-slot:body>
       <v-select
           v-model="selectedFiles"
-          :items="ownedFiles"
+          :items="ownedFiles.data"
           label="Select files"
           multiple
           chips

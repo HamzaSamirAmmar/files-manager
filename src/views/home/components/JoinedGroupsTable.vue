@@ -68,7 +68,7 @@ export default {
     ...mapState(useGroupStore, ["joinedGroups"]),
   },
   methods: {
-    ...mapActions(useGroupStore, ["checkIn", "bulkCheckIn","showFileContent"]),
+    ...mapActions(useGroupStore, ["checkIn", "bulkCheckIn", "showFileContent"]),
     showBulkCheckInButton: function () {
       return this.selected.length > 0;
     },
@@ -80,9 +80,7 @@ export default {
     },
     itemSelected(item) {
       if (item.value) {
-        if (this.selected.indexOf(item.item.id) === -1) {
-          this.selected.push(item.item.id);
-        }
+        this.selected.push(item.item.id);
       } else {
         this.selected.splice(this.selected.indexOf(item.item.id), 1);
       }
@@ -90,9 +88,7 @@ export default {
     toggleSelectAll(item) {
       if (item.value) {
         item.items.map((selected) => {
-          if (this.selected.indexOf(selected.id) === -1) {
-            this.selected.push(selected.id);
-          }
+          this.selected.push(selected.id);
         });
       } else {
         item.items.map((unSelected) => {
