@@ -17,7 +17,9 @@
       <v-row class="my-5">
         <v-icon large color="primary"> mdi-account-multiple </v-icon>
         <div class="text-h4 font-weight-medium ml-5 primary--text">
-          {{ group.name }}
+          <RouterLink :to="'/group-details/'+group.id" style="text-decoration:none;">
+            {{ group.name }}
+          </RouterLink>
         </div>
       </v-row>
       <FilesTable
