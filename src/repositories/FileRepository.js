@@ -34,16 +34,9 @@ export default {
     return Client.delete(`/files/${id}`);
   },
   showFileContent(id) {
-    return Client.get(
-      `/files/${id}/content`,
-      {
-        responseType:'blob',
-        // headers:{
-        //   // 'Access-Control-Allow-Origin': '*',
-        //   // "secure": false
-        // }
-      }
-    );
+    return Client.get(`/files/${id}/content`, {
+      responseType: "blob",
+    });
   },
   uploadFile(name, file) {
     return Client.post(

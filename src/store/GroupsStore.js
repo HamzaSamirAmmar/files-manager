@@ -20,24 +20,23 @@ export const useGroupStore = defineStore("groupStore", {
       fileRepository
         .showFileContent(id)
         .then((response) => {
-           // create file link in browser's memory
-           const url = window.URL.createObjectURL(new Blob([response.data]));
-           const link = document.createElement('a');
-           link.href = url;
-           link.setAttribute('download', 'file.pdf');
-           document.body.appendChild(link);
-           link.click();
+          // create file link in browser's memory
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "file.pdf");
+          document.body.appendChild(link);
+          link.click();
           this.joinedGroups.loading = false;
         })
         .catch((err) => {
           console.log(err);
           this.joinedGroups.loading = false;
           this.joinedGroups.error = true;
-          console.log(err);
           // temporary solution
           this.joinedGroups.message =
             err.message !== "Network Error"
-              ? err.response.data.message
+              ? "This action is unauthorized"
               : "";
           // ************************** //
         });
