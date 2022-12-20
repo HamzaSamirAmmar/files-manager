@@ -41,7 +41,7 @@
           <v-icon
             small
             class="mr-2"
-            @click="checkIn(slotProps.item.id, group.id)"
+            @click="checkIn(slotProps.item.id)"
           >
             mdi-file-lock
           </v-icon>

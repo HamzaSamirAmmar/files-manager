@@ -20,23 +20,22 @@ export const useGroupStore = defineStore("groupStore", {
       fileRepository
         .showFileContent(id)
         .then((response) => {
-           // create file link in browser's memory
-           const url = window.URL.createObjectURL(new Blob([response.data]));
-           const link = document.createElement('a');
-           link.href = url;
-           var downloadedFileNameWithExtension='file.pdf';//default
-           var viewedFile=null;
-           this.joinedGroups.data.map((group)=>{
-            var file=group.files.find(file=>file.id==id);
-            if(file!=undefined)
-              viewedFile=file;
-           },viewedFile);
-           if(viewedFile!=null){
-            downloadedFileNameWithExtension=viewedFile.name;
-           }
-           link.setAttribute('download', downloadedFileNameWithExtension);
-           document.body.appendChild(link);
-           link.click();
+          // create file link in browser's memory
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          var downloadedFileNameWithExtension = "file.pdf"; //default
+          var viewedFile = null;
+          this.joinedGroups.data.map((group) => {
+            var file = group.files.find((file) => file.id == id);
+            if (file != undefined) viewedFile = file;
+          }, viewedFile);
+          if (viewedFile != null) {
+            downloadedFileNameWithExtension = viewedFile.name;
+          }
+          link.setAttribute("download", downloadedFileNameWithExtension);
+          document.body.appendChild(link);
+          link.click();
           this.joinedGroups.loading = false;
         })
         .catch((err) => {
@@ -51,7 +50,7 @@ export const useGroupStore = defineStore("groupStore", {
           // ************************** //
         });
     },
-    checkIn(id, groupId) {
+    checkIn(id) {
       this.joinedGroups.loading = true;
       fileRepository
         .checkIn(id)
@@ -59,9 +58,7 @@ export const useGroupStore = defineStore("groupStore", {
           console.log(response);
           this.joinedGroups.loading = false;
           this.joinedGroups.message = "File checked successfully :)";
-          // TODO change reserver name in the files table (get name of current user)
-          // use group id to find the group and id to find the file
-          console.log(groupId);
+          this.fetchJoinedGroups();
         })
         .catch((err) => {
           console.log(err);
@@ -78,6 +75,7 @@ export const useGroupStore = defineStore("groupStore", {
         .then(() => {
           this.joinedGroups.loading = false;
           this.joinedGroups.message = "Files checked successfully :)";
+          this.fetchJoinedGroups();
         })
         .catch((err) => {
           this.joinedGroups.loading = false;

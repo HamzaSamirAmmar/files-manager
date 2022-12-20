@@ -1,5 +1,5 @@
 <template>
-  <AuthForm :title="title">
+  <AuthForm  ref="authForm" :title="title">
     <!--From extra fields-->
     <template v-slot:extra-fields>
       <v-text-field
@@ -60,13 +60,13 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(useUserStore, ["loading","message"]),
+    ...mapState(useUserStore, ["loading", "message"]),
   },
   watch: {
     message: {
       handler(newMessage) {
         this.$nextTick(() => {
-          if(newMessage!=""){
+          if (newMessage != "") {
             this.$root.VToast.showErrorMessage(newMessage);
             this.resetErrorNMessage();
           }
@@ -75,10 +75,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useUserStore, ["register","resetErrorNMessage"]),
+    ...mapActions(useUserStore, ["register", "resetErrorNMessage"]),
     postRegister: function (email, password) {
-      // TODO: checkValidation
-      this.register(email,password,this.username);
+      if (this.$refs.authForm.valid()) {
+        this.register(email, password, this.username);
+      }
     },
     redirect: function () {
       this.$router.push("/login");
