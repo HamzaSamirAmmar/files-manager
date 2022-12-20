@@ -20,13 +20,23 @@ export const useGroupStore = defineStore("groupStore", {
       fileRepository
         .showFileContent(id)
         .then((response) => {
-          // create file link in browser's memory
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "file.pdf");
-          document.body.appendChild(link);
-          link.click();
+           // create file link in browser's memory
+           const url = window.URL.createObjectURL(new Blob([response.data]));
+           const link = document.createElement('a');
+           link.href = url;
+           var downloadedFileNameWithExtension='file.pdf';//default
+           var viewedFile=null;
+           this.joinedGroups.data.map((group)=>{
+            var file=group.files.find(file=>file.id==id);
+            if(file!=undefined)
+              viewedFile=file;
+           },viewedFile);
+           if(viewedFile!=null){
+            downloadedFileNameWithExtension=viewedFile.name;
+           }
+           link.setAttribute('download', downloadedFileNameWithExtension);
+           document.body.appendChild(link);
+           link.click();
           this.joinedGroups.loading = false;
         })
         .catch((err) => {

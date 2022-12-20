@@ -60,10 +60,22 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(useUserStore, ["loading"]),
+    ...mapState(useUserStore, ["loading","message"]),
+  },
+  watch: {
+    message: {
+      handler(newMessage) {
+        this.$nextTick(() => {
+          if(newMessage!=""){
+            this.$root.VToast.showErrorMessage(newMessage);
+            this.resetErrorNMessage();
+          }
+        });
+      },
+    },
   },
   methods: {
-    ...mapActions(useUserStore, ["register"]),
+    ...mapActions(useUserStore, ["register","resetErrorNMessage"]),
     postRegister: function (email, password) {
       // TODO: checkValidation
       this.register(email,password,this.username);

@@ -43,15 +43,24 @@ export default {
     title: "Login to your account",
   }),
   computed: {
-    ...mapState(useUserStore, ["loading"]),
+    ...mapState(useUserStore, ["loading","message"]),
+  },
+  watch: {
+    message: {
+      handler(newMessage) {
+        this.$nextTick(() => {
+          if(newMessage!=""){
+            this.$root.VToast.showErrorMessage(newMessage);
+            this.resetErrorNMessage();
+          }
+        });
+      },
+    },
   },
   methods: {
-    ...mapActions(useUserStore, ["login"]),
+    ...mapActions(useUserStore, ["login","resetErrorNMessage"]),
     postLogin: function (email, password) {
-      // this.$root.VToast.showErrorMessage("Network error");
       if (this.$refs.authForm.valid()) {
-        console.log(email);
-        console.log(password);
         this.login(email, password);
       }
     },

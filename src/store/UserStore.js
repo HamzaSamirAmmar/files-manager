@@ -10,6 +10,8 @@ export const useUserStore = defineStore("userStore", {
         ? null
         : JSON.parse(localStorage.getItem("user")),
     loading: false,
+    error:false,
+    message:''
   }),
   getters: {
     isAuthenticated() {
@@ -26,6 +28,10 @@ export const useUserStore = defineStore("userStore", {
     },
   },
   actions: {
+    resetErrorNMessage(){
+        this.message='',
+        this.error=false;
+    },
     login(email, password) {
       console.log(this.user);
       this.loading = true;
@@ -39,7 +45,8 @@ export const useUserStore = defineStore("userStore", {
         })
         .catch((err) => {
           this.loading = false;
-          console.log(err);
+          this.error=true;
+          this.message=err.response.data.errors[0][0];
         });
     },
     register(email, password, username) {
@@ -54,7 +61,8 @@ export const useUserStore = defineStore("userStore", {
         })
         .catch((err) => {
           this.loading = false;
-          console.log(err);
+          this.error=true;
+          this.message=err.response.data.errors[0][0];
         });
     },
     logout() {
