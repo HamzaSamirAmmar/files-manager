@@ -42,6 +42,7 @@ export const useUserStore = defineStore("userStore", {
           this.user = new User(response.data);
           localStorage.setItem("user", JSON.stringify(response.data.data));
           router.push("/");
+          router.go(router.currentRoute);
         })
         .catch((err) => {
           this.loading = false;
@@ -58,6 +59,7 @@ export const useUserStore = defineStore("userStore", {
           this.user = new User(response.data);
           localStorage.setItem("user", JSON.stringify(response.data.data));
           router.push("/");
+          router.go(router.currentRoute);
         })
         .catch((err) => {
           this.loading = false;

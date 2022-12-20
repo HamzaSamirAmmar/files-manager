@@ -8,6 +8,10 @@ export default {
     });
   },
 
+  logout() {
+    return Client.post("/logout");
+  },
+
   register(email, password, name) {
     return Client.post("/register", {
       email: email,
